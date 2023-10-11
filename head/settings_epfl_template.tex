@@ -12,26 +12,28 @@
 \usepackage[utf8]{inputenc}
 % % Uncomment for bibliography
 % % Bibliography using Biblatex
-%\usepackage{doi}
-%\usepackage[autostyle]{csquotes}
+\usepackage{doi}
+\usepackage[autostyle]{csquotes}
 % \usepackage[
 %     backend=biber,
 %     style=authoryear,
 %     natbib=true,
-%     firstinits=true,
-%     sortlocale=en_US,
+%     giveninits=true,
+%     % sortlocale=en_US,
 %     url=false, 
 %     doi=true,
 %     eprint=false,
 %     isbn=false
 % ]{biblatex}
-%\addbibresource{tail/bibliography.bib}
+\usepackage[backend=biber,style=numeric-comp]{biblatex}
+% \addbibresource{references.bib}
+\addbibresource{tail/bibliography.bib}
 % % OR Bibliography management for Bibtex 
 % Load natbib before babel
-\usepackage[round]{natbib}
+% \usepackage[round]{natbib}
 
 
-\usepackage[french,german,english]{babel}
+\usepackage[english]{babel}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

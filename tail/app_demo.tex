@@ -1,0 +1,91 @@
+\chapter{Real-Time Demonstration of Optical Communication System Performance Using HpCom Numerical Simulator}
+
+This interactive demonstration offers a unique, real-time exploration of optical communication system simulations, powered by the High-Performance COMmunication (HpCom) library (Fig.~\ref{fig:HpCom_scheme}). Participants can witness first-hand the effects of system parameters and signal processing techniques on image quality, transforming a photograph taken at our stand into a vivid illustration of optical communication complexities.
+
+In the rapidly advancing domain of optical communication systems, efficient, high-performance simulation tools are of critical importance. Recognizing the need for a software tailored to the demands of this field, we introduce our GPU-accelerated HpCom library\cite{esf0_2023_7880552}. This framework enhances simulation capabilities, fostering innovation and accelerating research.
+
+The use of GPUs in our library provides significant advantages, such as parallel computations, scalability, and power efficiency. These aspects enable efficient handling of large-scale computations, an essential feature for researchers tackling the computational demands of emerging optical communication systems.
+
+Our demo serves as an educational platform, illustrating how GPU-based simulations allow researchers to explore varied scenarios quickly and efficiently, leading to faster discoveries and more effective resource utilization. As participants interact with the demo, they will gain a tangible understanding of the impacts of system parameter changes and advanced techniques on signal quality.
+
+
+
+\section{Procedure}
+
+The primary objective of this demonstration is to showcase the speed of our numerical simulations. To emphasize this, we propose a demonstration procedure in which each stage takes no more than a few dozen seconds, contingent on the specific system parameters.
+
+% The process begins by taking a picture of the participant, which is then uploaded to a server. This image will be decomposed into bits, including all RGB components, and utilized as the payload for numerical simulations. The web interface allows for modification of various simulation parameters such as the number of spans, dispersion, average power, and noise.
+
+\textbf{1. Image Capture and Conversion:} A visitor to the stand has their photograph taken. This digital image, composed of a matrix of pixels, is then transformed into binary data. Every pixel, composed of red, green, and blue (RGB) colour components, is broken down into its RGB values. These values are then converted into binary format, generating a long bit stream that serves as the payload for the ensuing simulation.
+
+
+\begin{figure}[t]
+   \centering
+        \includegraphics[width=0.7\linewidth]{images/hpcom/hpcom_scheme.pdf}
+    \caption{Framework architecture for optical communication system simulation, featuring optimized transceiver (Tx) design, GPU-accelerated SSFM-based channel model (with $N$ spans of length $L$), receiver implementation (Rx), and performance metrics evaluation including BER, EVM, and MI.}
+    \label{fig:HpCom_scheme}
+\end{figure}
+
+\textbf{2. Setting Simulation Parameters:} The visitor is invited to interact with our intuitive web interface, designed to provide control over various simulation parameters. These parameters include:
+\begin{itemize}
+    \item Number of spans: The length of the optical fibre, which can be divided into multiple spans.
+    \item Average power: The mean optical power launched into the fibre.
+    \item Dispersion: The fibre's chromatic dispersion parameter.
+    \item Nonlinearity: The fibre's nonlinear refractive index.
+    \item Noise: The amplified spontaneous emission (ASE) noise from the erbium-doped fibre amplifiers (EDFAs).
+    \item Modulation format: The optical modulation scheme used to encode the data onto the lightwave.
+\end{itemize}
+
+\begin{figure}
+  \centering
+  \begin{minipage}[c]{0.33\linewidth}
+    \centering
+    \includegraphics[width=1.\linewidth]{images/hpcom/parrot3.jpg}
+  \end{minipage}
+  \begin{minipage}[c]{0.33\linewidth}
+    \centering
+    \includegraphics[width=1.\linewidth]{images/hpcom/parrot3_rx.jpg}
+  \end{minipage}
+  \begin{minipage}[c]{0.33\linewidth}
+    \centering
+    \includegraphics[width=1.\linewidth]{images/hpcom/parrot3_rx2.jpg}
+  \end{minipage}
+  \caption{
+  The left image is the original picture to be transmitted. The central image showcases how the picture appears after signal propagation through an optical system with parameters: $P_{ave}=0$ \textrm{[dBm]}, $12 \times 80$ $[\textrm{km}]$ spans of SSFM. The fiber was characterized by an attenuation coefficient of $\alpha = 0$ $[\textrm{dB}/\textrm{km}]$, EDFA noise figure 4.5 \textrm{[dB]}, a dispersion coefficient of $D = 16.8$ $\textrm{ps}/[\textrm{nm} \cdot \textrm{km}]$, and a nonlinear coefficient of $\gamma = 1.2$ $[\textrm{W} \cdot \textrm{km}]^{-1}$. The image on the right demonstrates the when $P_{ave} = 5$ \textrm{[dBm]}.
+  }
+  \label{fig:demo_example}
+\end{figure}
+
+\textbf{3. Signal Generation and Propagation:} Once the parameters are set, the HpCom library generates the signal according to the selected modulation format and propagates it through the simulated optical fibre. The library employs the Split-Step Fourier method to accurately simulate the combined effects of chromatic dispersion, nonlinearity, and noise. 
+
+
+
+\textbf{4. Decoding and Visualization:} After the signal propagation, the signal is received on the receiver, where a corresponding matched filter is applied, followed by equalisation and demodulation. The resulting bit stream is transformed back into the RGB image data, which is rendered on the screen. The image is likely to show distortions due to the impairments introduced during signal propagation, as no Forward Error Correction (FEC) is applied.
+
+\textbf{5. Application of Advanced Techniques:} To demonstrate how advanced signal processing techniques can improve the system performance, visitors are given the option to enable these strategies. This includes Machine Learning techniques for impairment mitigation and Digital Back Propagation (DBP) to compensate for the combined effects of chromatic dispersion and nonlinearity. The number of DBP steps per span can also be adjusted for optimal performance.
+
+
+Throughout the demo, the impact of various parameters and techniques on the resulting image quality is clearly observable, providing visitors with a tangible understanding of optical communication systems' complexity. By comparing the initial and final images, they can directly see the effects of their chosen settings. The demo's real-time and interactive nature makes it a unique educational tool for those interested in optical communications.
+
+
+
+
+% \section{Simulation and Decoding}
+
+
+
+% The signal then undergoes propagation, with the option to decode without Forward Error Correction (FEC), using only Chromatic Dispersion Compensation (CDC). This simulation allows the observation of how the image quality deteriorates due to non-linear effects and other system impairments.
+
+% \section{Analysis}
+
+% Subsequently, the image is restored, and the impact of the chosen parameters is evident. The initial image and the simulated output can be compared directly. By introducing ML techniques, DBP, and other advanced strategies, participants can observe how these improvements enhance the quality of the transmitted image.
+
+\section{Example Demonstration}
+
+As illustrated in Fig.~\ref{fig:demo_example}, we demonstrate the process of image corruption due to signal propagation with specific system parameters. The original image of a parrot (left) undergoes signal propagation with parameters: $12 \times 80$ $[\textrm{km}]$ spans of standard single-mode fiber (SSFM), attenuation coefficient of $\alpha = 0$ $[\textrm{dB}/\textrm{km}]$, EDFA noise figure 4.5 \textrm{[dB]}, a dispersion coefficient of $D = 16.8$ $\textrm{ps}/[\textrm{nm} \cdot \textrm{km}]$, and a nonlinear coefficient of $\gamma = 1.2$ $[\textrm{W} \cdot \textrm{km}]^{-1}$. The resultant image (centre) exhibits the distortions introduced by these system parameters. Increasing the $P_{ave}$ to $5$ \textrm{[dBm]} (right image) further alters the image quality, showing how different power levels can impact the quality of the received signal.
+
+
+
+\section{Conclusion}
+
+Through this live demonstration, participants can explore the capabilities and benefits of the HpCom library and better understand the impact of various parameters and techniques on signal quality in optical communication systems. By directly observing the results of their choices, participants will gain a better understanding of the complexities of optical signal transmission and the opportunities for improvement.
