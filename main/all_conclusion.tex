@@ -1,0 +1,43 @@
+\chapter{Conclusion and Outlook}
+
+% The research undertaken in this dissertation was driven by the critical need to enhance optical communication systems, which are the backbone of our global connectivity. Amidst the growing data transmission demands driven by advancements like 5G/6G and cloud computing, existing infrastructure faces challenges of capacity and efficiency. This work set out to address these challenges by advancing Nonlinear Fourier Transform (NFT) techniques and leveraging machine learning for system optimization.
+
+% The first part of this thesis established the theoretical and practical underpinnings of NFT within optical communications. We showed that NFT can be used for analysis of the system which can potentially give insights to channel and signal optimisations. Moreover, we first introduce the technique to succesfully apply NFT for continuous signal 
+
+% We proposed and developed a new method that applies the \acrshort{nft} to continuous signals. This method involves pre-processing the signal using \acrfull{cdc} before applying \acrshort{nft}. The outcomes for single polarization signals have shown better performance than \acrfull{dbp} with three steps per span, and for dual polarization, the results are compared with \acrshort{dbp} with two steps per span. We have made the developed code publicly available.
+    
+% Through the use of \acrshort{nft}, we analyzed \gls{wdm} and \gls{ofdm} symbols to determine the conditions for the presence of solitons. Our analysis of \gls{wdm} signals revealed that a dominant portion of the energy (99\%) is associated with soliton components.
+    
+% We introduced a new approach for conducting both forward and inverse \acrshort{nft} operations using \acrshort{nn}s. The chosen \acrshort{nn} architecture was further optimized and has demonstrated effectiveness in working with noisy signals, where deterministic \acrshort{nft} algorithms were unsuccessful.
+
+% Through rigorous analysis and experimentation, we demonstrated the utility of NFT in discerning the nonlinear characteristics of fiber channels, offering pathways to surpass traditional capacity limits. This exploration into NFT's potential paved the way for its practical applications and integration into existing and future optical systems. 
+
+This thesis aims to create new techniques which can be used to improve optical communication systems, vital for global connectivity, in the face of increasing data demands from technologies like 5G/6G and cloud computing. It particularly focuses on enhancing Nonlinear Fourier Transform (NFT) techniques and incorporating machine learning to optimize these systems.
+
+A significant contribution is the development of a novel method for applying NFT to continuous signals, using \acrfull{cdc} for pre-processing. This approach surpassed traditional \acrfull{dbp} methods in single and dual polarization signal processing. The research further explores the presence of solitons in \gls{wdm} and \gls{ofdm} symbols, finding that soliton components carry a majority of the signal energy.
+
+A breakthrough in this work is the use of neural networks (NNs) for forward and inverse NFT, which showed promising results, especially in noisy signal environments where standard NFT methods falter. This innovative use of NNs demonstrates their potential in addressing nonlinearity issues in optical channels, suggesting that NFT could be a key to unlocking greater channel capacities and enhancing the performance of optical communication systems.
+
+
+% The second part of this research focused on machine learning algorithms, specifically their application in optimizing the performance of optical communication systems.
+
+% A new GPU-accelerated framework, \acrfull{hpcom}, was introduced for simulating optical fiber channels with various characteristics. This framework serves as a data mining tool for subsequent research, and we have provided code examples along with the resulting data and performance metrics.
+    
+% e identified \gls{gb} as a promising technique for nonlinear equalization within optical channels.
+    
+% We demonstrated the performance of \acrshort{nn}s across a range of channel and signal parameters, showcasing their versatility and effectiveness.
+    
+% A data-driven approach was employed to uncover new complex structures within the received symbols' constellation, which arise from the nonlinearity of optical fibers. This non-Gaussian structure was evident across all examined ``triplets'' of received points.
+    
+% Furthermore, we provided a demonstration of real-time optical channel simulation as an additional resource.
+
+% The development of novel approaches for nonlinear equalization and the creation of non-Gaussian structures through data-driven methods showcased the transformative impact of machine learning. These advancements not only contribute to the field's theoretical knowledge but also provide actionable insights for the industry's technological evolution.
+
+In the second part of the research, machine learning algorithms are explored for their utility in enhancing optical communication systems. The introduction of \acrfull{hpcom}, a GPU-accelerated framework, marks a significant advancement, enabling efficient simulations of diverse optical fiber channels. This tool aids in data collection for further investigation, with examples and results included for reference.
+
+\acrfull{gb} is highlighted as an effective method for addressing the nonlinearity in optical channels, indicating its potential for broader application. Similarly, the adaptability and efficacy of \acrshort{nn}s are demonstrated across various channel and signal parameters, affirming their role in system optimization.
+
+A novel data-driven approach is applied to reveal intricate structures within received symbol constellations, a direct consequence of fiber nonlinearity. This discovery of non-Gaussian patterns across different signal point groupings adds a new dimension to the understanding of optical fiber communication.
+
+Overall, the integration of machine learning into optical communication presents a leap forward in both theory and practical application, promising to influence future technological developments in the industry.
+

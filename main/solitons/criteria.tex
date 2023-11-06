@@ -1,0 +1,55 @@
+\section{Criteria Analysis for the Existence of Discrete Spectrum}
+
+Above, we saw that there is a criteria for signals of a certain form, which determines the possibility of the existence of discrete eigenvalues in the Zakharov-Shabat problem. The imprecise criterion described in \cite{novikov1984theory} is that if $L_1$ norm, defined by the formula 
+\begin{equation}
+    L_1(q) = \lVert q (t, 0) \rVert_{L_1} = \int^{+ \infty}_{ - \infty} | q (t, 0) | dt  
+    \label{eq:l1}
+\end{equation}
+(where $q(t,z)$ is signal to study, $t$ and $z$ --- time and space coordinates),
+is less than $ 1.317 $, then the system~(\ref{eq:ZS}) does not have a discrete spectrum.
+
+Later, in 2003, Klaus and Shaw found an exact criterion in \cite{klaus2003}.
+For the complex initial condition $q (t, 0)$, there is no discrete spectrum if
+\begin{equation}
+    \lVert q(t, 0) \rVert_{L_1} \leq \frac{\pi}{2} {.}
+    \label{eq:l1_criteria}
+\end{equation}
+If $ L_1 $ norm is greater than a given value, then a discrete spectrum may exist (but not necessarily exist).
+
+In this paper we use both the $ L_1 $ norm~(\ref{eq:l1}) and the $ L_2 $ norm
+\begin{equation}
+    L_2(q) = \lVert q (t, 0) \rVert_{L_2} = \int^{+ \infty}_{ - \infty} | q (t, 0) |^2 dt {,} 
+    \label{eq:l2}
+\end{equation}
+for which there is no criterion like~(\ref{eq:l1_criteria}). However, for numerical simulation, we can obtain a criterion that can give us some preliminary information about the $L_2$ levels of the norm, and therefore about the average signal power, less than which there cannot be any discrete spectrum in the signals. Without loss of generality, we consider the signal $q (t, z)$ for a fixed spatial coordinate $z$. Subsequent calculations are performed in dimensionless units.
+
+\begin{eqnarray}
+    L_1 = \| q(t,z) \|_{L_1} = \sum_{n = 0}^{N-1} | q_n | \Delta t {,} \\
+    L_2 = \| q(t,z) \|_{L_2} = \sum_{n = 0}^{N-1} | q_n |^2 \Delta t {,}
+\end{eqnarray}
+where $ \Delta t = T / N $, $ T $ is the time interval on which the function $ q (t, z) $ is defined, $ N $ is the number of sampling points, $q_n$ are the values of the function $q (t_n , z)$ at these points. Since we have some finite set of $q_n$ values, we can calculate the average value for this set
+\begin{eqnarray}
+    < |q_n| > = \frac{1}{N} \sum_{n=0}^{N-1} |q_n| = \frac{L_1}{N \Delta t} = \frac{L_1}{T} {,} \\
+    < |q_n|^2 > = \frac{1}{N} \sum_{n=0}^{N-1} |q_n|^2 = \frac{L_2}{N \Delta t} = \frac{L_2}{T} {,}
+\end{eqnarray}
+where the brackets $ <...> $ denote the operation of taking the average. The modulus of complex numbers is real and satisfies the condition $| q_n | \geq 0$. Also the value of $L_1$ is equal to or greater than $0$ by definition. Now remember that the average of the square of a positive value is greater than or equal to the square of the average of this value (generalized mean inequality), one can write
+\begin{equation}
+    < |q_n|^2 > \ \geq \ < |q_n| >^2 \quad \Rightarrow \quad \frac{L_2}{T} \geq \frac{L_1^2}{T^2} {.}
+\end{equation}
+
+It remains to obtain the constraint on $L_1^2$ from the criterion~\ref{eq:l1_criteria}).
+First of all, we note that $ \frac{\pi}{2}> 1 $, which implies
+\begin{equation}
+    L_1 > \frac{\pi}{2} \quad \Rightarrow \quad L_1^2 > \frac{\pi^2}{4} \quad \Rightarrow \quad \frac{L_1^2}{T} > \frac{\pi^2}{4T} {.}
+\end{equation}
+We can conclude that the criterion for the existence of discrete eigenvalues of the Zakharov-Shabat problem for the $ L_2 $ norm:
+\begin{equation}
+    L_2 > \frac{\pi^2}{4T} {.}
+    \label{eq:l2_criteria}
+\end{equation}
+
+It is not surprising that in the limit $ T \to \infty $ the criterion reduces to a simple $ L_2> 0 $. However, in most problems, the signal is localized in time, so the integral over an infinite interval in the formula~(\ref{eq:l2}) can be replaced by an integral over a finite interval, where the signal is not zero
+\begin{equation}
+    \widetilde{L_2} = \| q(t,z) \|_{\widetilde{L_2}} = \int_{-T/2}^{T/2} |q(t,z)|^2 dt {,}
+\end{equation}
+for which the criterion~(\ref{eq:l2_criteria}) works.

@@ -1,36 +1,16 @@
-In this section, we describe the main results obtained in the process of finding a suitable NN architecture for computing the continuous NF spectrum of a given signal. 
-First, we describe which type of signals we used in training and testing. Next, we discuss the Bayesian optimisation application for our finding the best-performing NN architecture and the respective training procedure. 
-Then, we analyse the output accuracy for the proposed NN architecture and compare it with that produced by a deterministic NFT numerical algorithm.
-In this paper, for the data generation and ``conventional'' computation we use the Fast NFT (FNFT) library\cite{FNFT2018}.
-At the end of the Results section, we show that the proposed NN architecture can predict not only the scattering coefficient $r(\xi)$, but also the NF coefficient $b(\xi)$, Eq.~(\ref{f:ab}).
+\subsection{Training data generation}
 
+In this work, without loss of generality, we analyse the NF decomposition of the signals having the form of wavelength division multiplexing (WDM) format with random modulation and return-to-zero carrier functions, considered in \cite{srf18,tsr19}. 
 
-
-\subsection*{Training data generation}
-
-In this work, without loss of generality, we analyse the NF decomposition of the signals having the form of wavelength division multiplexing (WDM) format with random modulation and return-to-zero carrier functions, considered in \cite{srf18,tsr19}. In the time domain, one (normalised) WDM symbol to decompose is given as the sum of independent subcarriers:
-\begin{equation}
-q(t) = \frac{1}{Q} \sum_{k=1}^{M} C_k \, e^{i \omega_k t} f(t) {,} \quad -\frac{T}{2} \le t < \frac{T}{2} {,} \quad \text{with} \, \, \, 
-f(t)=
-\left\{
-\begin{aligned}
-    \frac{1}{2}\Big[1 - &\cos\left(\frac{4\pi t}{T} + 2\pi \right)\Big] {,}  \quad  \text{for} \, \, \, \, -\frac{T}{2} \le t \le -\frac{T}{4} \; \; \text{or} \; \; \frac{T}{4} \le t \le \frac{T}{2}, \\
-    &1 {,}  \qquad \qquad \qquad \qquad \text{for} \, \, \, \, -\frac{T}{4} < t < \frac{T}{4}, \\
-\end{aligned}
-\right.
-\label{eq:wdm}
-\end{equation}
-where $M$ is a number of WDM channels, $\omega_k$ is a carrier frequency of the $k$-th channel, $C_k$ corresponds to the digital data in $k$-th channel, and $T$ defines the symbol interval; $f(t)$ is the carrier support waveform of our return-to-zero pulses.
-$Q$ in (\ref{eq:wdm}) is the normalisation factor that we use to set the required energy for each signal (the total signal energy is calculated according to Eq.~(\ref{eq:snr})).
-Each $C_k$ in (\ref{eq:wdm}) is a complex number drawn from the constellation with a particular cardinality, i.e. it is chosen with an equal probability from the finite set of allowed constellation points. For our NF decomposition analysis each time we use a single signal of the form given in Eq.~(\ref{eq:wdm}). To train the NN, we precomputed 94035 such signals, with $C_k$ for each carrier randomly drawn from quadrature phase-shift keying (QPSK) constellations, i.e. the constellations with 4 possible points; the number of optical channels (carriers) in (\ref{eq:wdm}) is 15. Then we sampled our signal at equidistant points in time, $t_m$, over the segment of length $T$, $q(t_m)=q_m$: the number of sample points in each signal representation was $2^{10}= 1024$. The normalised symbol interval $T$ was set to unity so that the time step size used was $\Delta t = 2^{-10}$ (for the explicit normalisations referring to single-mode fibre transmission see, e.g., Ref.~\cite{tplwfkd17}).
+To train the NN, we precomputed 94035 such signals, with $C_k$ for each carrier randomly drawn from quadrature phase-shift keying (QPSK) constellations, i.e. the constellations with 4 possible points; the number of optical channels (carriers) in (\ref{eq:wdm}) is 15. Then we sampled our signal at equidistant points in time, $t_m$, over the segment of length $T$, $q(t_m)=q_m$: the number of sample points in each signal representation was $2^{10}= 1024$. The normalised symbol interval $T$ was set to unity so that the time step size used was $\Delta t = 2^{-10}$ (for the explicit normalisations referring to single-mode fibre transmission see, e.g., Ref.~\cite{tplwfkd17}).
 For generated discretised profile, the reflection coefficient $r(\xi)$ was identified for 1024 sample points in $\xi$ variable,  calculated using the fast numerical NFT method \cite{FNFT2018}. The  parameter $\xi$ for our computations ranged from $-\pi / (4 \Delta t) \approx -804$ to $\pi / (4 \Delta t) \approx 804$: this region corresponds to the conventional Fourier spectrum computational bandwidth for the given sampling rate $\Delta t$, up to the scaling factor 2 referring to the linear limit correspondence \cite{pdt13}.
 Each signal in the dataset was eventually normalised so that its energy $E_{\text{signal}} = 39.0$. 
 Some of the signals in the initial dataset for this energy contained solitons, but such signals were singled out and removed from the training and validation datasets. 
 The remaining 94,035 signals did not contain solitons, which means that the discrete nonlinear spectrum for each signal is absent, such that these are used in our analysis.
-We note that although there are no solitons in the signals, we are still operating in the regime where the signal nonlinearity is not negligible, see Methods. The more straightforward way of generating the datasets with desired properties would be to use the inverse NFT routines, but these are much more time-consuming, such that we decided to employ the data-generation approach described below: it also allows us to explicitly control the accuracy of the generation process. 
+We note that although there are no solitons in the signals, we are still operating in the regime where the signal nonlinearity is not negligible. The more straightforward way of generating the datasets with desired properties would be to use the inverse NFT routines, but these are much more time-consuming, such that we decided to employ the data-generation approach described below: it also allows us to explicitly control the accuracy of the generation process. 
 
 
-Together with the set of deterministic signals, we generated the signal sets with the addition of uncorrelated Gaussian noise, adding the random value to each sample point. In realistic applications, the source of this noise can be the instrumental imperfections of the transceiver or the effects relevant to inline amplifiecation\cite{a12}. The signal-to-noise ratio (SNR) is a traditionally used characteristic for quantifying  the level of a noisy corruption: 
+Together with the set of deterministic signals, we generated the signal sets with the addition of uncorrelated Gaussian noise, adding the random value to each sample point. In realistic applications, the source of this noise can be the instrumental imperfections of the transceiver or the effects relevant to inline amplifiecation~\cite{a12}. The signal-to-noise ratio (SNR) is a traditionally used characteristic for quantifying  the level of a noisy corruption: 
 \begin{equation}
     \text{SNR} = \frac{E_{\text{signal}}}{E_{\text{noise}}} {,} \qquad
     E_{\text{signal}} = \sum_{m = 0}^{N - 1} |q_m|^2 \Delta t {,}
@@ -41,11 +21,45 @@ where $E_{\text{signal}}$ and $E_{\text{noise}}$ are the signal and noise energi
 We note that the NFT in optical communications is tailored for use in long-haul systems, meaning the high levels of noise (low SNR) is most interesting from the application perspectives. However, we also include the results for high SNR levels to analyse the NN functioning peculiarities in detail.
 
 
+Turning to the question of soliton appearance from a localised profile, the rigorous criterion for our having no embedded solitons can be formulated for single-lobe profiles as \cite{ks03}:
+\begin{equation}\label{l1}
+\intop_{-\infty}^{\infty} |q(t)| \, dt < \pi/2,
+\end{equation}
+and the deterministic profiles used in our work have a much higher normalised energy. For more involved multi-lobe profiles, the soliton-creation threshold is typically higher, but we still had some profiles that contained solitary components, so we had to eliminate them. When we add noise to our signal that initially contains no solitons, a random modulation typically diminishes the probability of solitons appearance \cite{td08,dp08}. However, we checked out that all randomly perturbed signals used in our study did not contain a solitonic component as well.
 
-\subsection*{Neural network design and Bayesian optimisation}
+
+To demonstrate the difference between the continuous NFT spectrum and the linear FT spectrum, we calculated (taking into account the necessary transformations and frequency scaling) both spectra for an example signal of the type used in our analysis.
+As the measure showing the distinction between the conventional Fourier and NF spectra, we use the norm of the difference: $|r(\xi) - r_{FT}(\xi)|$, where $r_{FT}(\xi)$ is given by the first (linear) term in the expansion of $r(\xi)$, Eq.~(\ref{r0}).
+Fig.~\ref{fig:nft_and_ft}a shows an example of a nonlinear and conventional Fourier spectrum.
+The dependence of the difference on the spectral parameter $\xi$ for a typical signal from our testing set is shown in Fig.~\ref{fig:nft_and_ft}b.
+The critical decrease of the difference at $\xi$ region below $-100$ and above $100$ occurs because the amplitude of the continuous spectrum at that region also tends to zero. The average maximal difference parameter value over the entire spectrum for all signals from the test dataset is $\approx 9$. 
+This fact allows us to argue that the nonlinear effects are essential for the selected testing signals, despite their containing no solitons.
+Thus, the accuracy of the NFT-Net allows us to perceive the truly nonlinear effects. 
+
+\begin{figure}[ht]
+\centering
+\begin{minipage}{.49\textwidth}
+  \centering
+  \includegraphics[width=1.\linewidth]{images/nn_nft/scirep_ft_vs_nft_actual.pdf}
+\end{minipage}%
+\begin{minipage}{.49\textwidth}
+  \centering
+  \includegraphics[width=1.\linewidth]{images/nn_nft/scirep_ft_vs_nft.pdf}
+\end{minipage}
+\caption{\textbf{(a)} Example of the amplitudes of Fourier spectrum (FT) and continuous nonlinear Fourier spectrum (NFT) for one of the training signals. \textbf{(b)} Example of the absolute value of the difference between Fourier spectrum and continuous nonlinear Fourier spectrum for one of the training signal. For both graphs signal energy $E_{\text{signal}} = 39.0$ in non-dimensional units.}
+\label{fig:nft_and_ft}
+\end{figure}
+
+% \subsubsection{Numerical NFT computation}
+In our work we used the conventional forward NFT numerical method to generate training and testing data set pairs: the signal and its respective NF spectrum. %There exists a considerable amount of literature devoted to the different methods for the forward NFT operations \cite{pw18,yk14-2,vps19}.
+For the computation of continuous NF spectrum associated with a given profile $q(t)$ (containing no solitons) having the form of Eq.~(\ref{eq:wdm}), we used the exponential scheme ES4 from the FNFT package\cite{FNFT2018} (non-fast realisation). It has the accuracy proportional to the fourth power of the time sample size, $\sim (\Delta t)^4$. We note that there exists the fast realisation of the NFT processing with $\sim (\Delta t)^4$ accuracy\cite{medvedev2020exponential}, which can potentially be used for efficient NFT-Net training.
 
 
-As mentioned above, the general NF spectrum attributed to a given localised waveform consists of two parts: the discrete spectrum that we do not consider in our current study (our trial pulses do not contain any solitonic component, neither in pure form nor in the noisy case), and the continuous part which is our subject in hand here. The continuous part is retrieved through considering the special Jost solutions (\ref{f:asy}) to the Zakharov-Shabat problem (\ref{f:ZSode}), see Methods. The goal of our work is to demonstrate the fundamental possibility of replacing the direct calculation of NF spectrum through the numerical solution of the Zakharov-Shabat problem (\ref{f:ZSode}) with the computations employing specially-designed and trained NNs.
+
+\subsection{Neural network design and Bayesian optimisation}
+
+
+As mentioned above, the general NF spectrum attributed to a given localised waveform consists of two parts: the discrete spectrum that we do not consider in our current study (our trial pulses do not contain any solitonic component, neither in pure form nor in the noisy case), and the continuous part which is our subject in hand here. The continuous part is retrieved through considering the special Jost solutions (\ref{eq:nlse_jost_matrix}) to the Zakharov-Shabat problem (\ref{eq:ZS}), see Methods. The goal of our work is to demonstrate the fundamental possibility of replacing the direct calculation of NF spectrum through the numerical solution of the Zakharov-Shabat problem (\ref{eq:ZS}) with the computations employing specially-designed and trained NNs.
 
 The latter task can be addressed using the encoder-decoder approach, where the encoder transforms the input signal into some intermediate vector representation and, later, the decoder converts this representation into the output signal. We notice that the input and output signals can belong to two different data domains. There are several advantages of this approach, e.g. it is quite flexible, so the encoder and decoder structures can differ to match exactly the ``nature'' of each signal's domain. With this, we train such NNs in the end-to-end style, so the weights of the encoder and decoder will be trained simultaneously and fit each other.
 A lot of highly efficient encoder-decoder architectures have been designed up to date, e.g. those can demonstrate an efficiency higher than that of a human brain for some specific tasks \cite{ty2014deepface}. For processing quite long sequences (typically more than 1000 data points), the convolutional NNs (CNN) are often more beneficial than the recurrent NNs (RNN). Also, the CNN allows us to parallelise the computations in an efficient way, which is important in our case. Thus, we argue that the encoder-decoder architectures based on CNNs are most suitable for our data and task, though other NN types may also deserve investigation in latter studies.
@@ -56,7 +70,7 @@ Models of this type have several advantages, among which we underline the reduct
 However, a significant drawback of this architecture is the requirement to embed a large number of convolutional layers to increase the receptive field. In our work, to increase the effective size of that region, we used convolutions with dilation. This made it possible to exponentially increase the receptive field with the NN depth growth and, therefore, to capture a larger number of data points in the input signal.
 
 
-The momentous issue in using NNs to perform any nonlinear transformation is the choice of the optimal network architecture. One of the optimisation methods is to enumerate the possible combinations of NN parameters. But even in the case of a relatively small number of layers, the number of hyperparameters can reach several thousand, which makes the optimisation process very time-consuming, if realisable at all. Thus, the search for an optimisation algorithm for such computationally expensive problems can be extremely difficult. However, the Bayesian optimisation method\cite{pelikan1999boa} is deemed to be one of the most efficient optimisation strategies, and so we employ it in this work to find the optimal hyperparameters distribution for the NFT-Net.
+The momentous issue in using NNs to perform any nonlinear transformation is the choice of the optimal network architecture. One of the optimisation methods is to enumerate the possible combinations of NN parameters. But even in the case of a relatively small number of layers, the number of hyperparameters can reach several thousand, which makes the optimisation process very time-consuming, if realisable at all. Thus, the search for an optimisation algorithm for such computationally expensive problems can be extremely difficult. However, the Bayesian optimisation method~\cite{pelikan1999boa} is deemed to be one of the most efficient optimisation strategies, and so we employ it in this work to find the optimal hyperparameters distribution for the NFT-Net.
 
 % Part about Bayesian 
 
@@ -80,10 +94,10 @@ The momentous issue in using NNs to perform any nonlinear transformation is the 
 \end{figure}
 
 
-The Bayesian optimization builds a probabilistic model of the function mapping from hyperparameter values to the objective evaluated on a validation set\cite{mockus1975bayesian,pelikan1999boa}. By iteratively evaluating a promising hyperparameter configuration based on the current model, and then updating it, the Bayesian optimization aims to gather observations revealing as much information as possible about this function and, in particular, the location of the optimum. Thus, it tries to balance exploration (hyperparameters for which the outcome is most uncertain) and exploitation (the hyperparameters expected to bring us close to the optimum).
-An important aspect to note is that the Bayesian optimisation often does not return one specific point in the parameter hyperspace for which the optimised function is minimal. The process converges into some subspace of parameters, where several points can locally minimize the function\cite{pelikan1999boa}.
+The Bayesian optimization builds a probabilistic model of the function mapping from hyperparameter values to the objective evaluated on a validation set~\cite{mockus1975bayesian,pelikan1999boa}. By iteratively evaluating a promising hyperparameter configuration based on the current model, and then updating it, the Bayesian optimization aims to gather observations revealing as much information as possible about this function and, in particular, the location of the optimum. Thus, it tries to balance exploration (hyperparameters for which the outcome is most uncertain) and exploitation (the hyperparameters expected to bring us close to the optimum).
+An important aspect to note is that the Bayesian optimisation often does not return one specific point in the parameter hyperspace for which the optimised function is minimal. The process converges into some subspace of parameters, where several points can locally minimize the function~\cite{pelikan1999boa}.
 
-\begin{figure}[tbph]
+\begin{figure}[tbp]
     \centering
     \includegraphics[width=1.0\linewidth]{images/nn_nft/arch_new.pdf}
     \caption{The schematic of NFT-Net topology: the extended scheme presents the sequence of operations for the processing of real part; the processing of imaginary part is identical (marked with the long arrow below the scheme). The numbers indicating the layers/arrays sizes refer to our processing 1024 complex-valued signal samples.}
@@ -94,7 +108,7 @@ An important aspect to note is that the Bayesian optimisation often does not ret
 
 We manipulate the following hyperparameters for the convolutional part of the neural network: the number of convolutional layers, the number of filters, the kernel size, stride, dilation, and the activation function for each layer. After the convolutional part, there are 2 fully connected layers, the second of which has a fixed size (1024, which corresponds to the size of the output vector). The size and activation function of the first fully connected layer was also a hyperparameter for optimization.
 For the optimisation, we used a dataset without additional noise and employed only the real part of the continuous spectrum for the prediction. After that, the ``optimal'' architecture (but not weights) is fixed, and is no longer changed to predict the imaginary part of the continuous spectrum or for our operating with the datasets with additional noise.
-The loss function was optimised for each architecture. We used the mean squared error (MSE) as the loss function, aiming to minimise the MSE between the network output and the target output computed with the conventional NFT method\cite{FNFT2018}. In training, we employed the Adam (Adaptive Moment Estimation) optimisation algorithm with the learning rate of 1e-4 \cite{s2000adaptive}. 
+The loss function was optimised for each architecture. We used the mean squared error (MSE) as the loss function, aiming to minimise the MSE between the network output and the target output computed with the conventional NFT method~\cite{FNFT2018}. In training, we employed the Adam (Adaptive Moment Estimation) optimisation algorithm with the learning rate of 1e-4 ~\cite{s2000adaptive}. 
 The learning process of each point in the parameter hyperspace was stopped if the value of the loss function did not decrease over 5000 epochs. 
 We chose this large epoch stopping-criterium number to neutralise the factor of randomness in the learning process, which appears due to the random choice of the initial weights. Additionally, we checked the value of the loss function on the validation set to prevent the overfitting, but for the amount of training data used, the overfitting was not observed. 
 Figure~\ref{fig:bayes_full} presents the dependence of the MSE value and dependence of its minimum on the  Bayesian iteration number. For architectures with more than 20 million training parameters, we set the value of the loss function to $1.0$: this explains the upper cut-off limit in the figure. It is apparent from Fig.~\ref{fig:bayes_full} that the optimisation has identified a subspace where many architectures have approximately the same value of the loss function at the level of $10^{-5}$. However, there was a point where the value was at the level of $10^{-7}$. Thus, we took this point (a set of hyperparameters) as the optimal one.
@@ -102,10 +116,10 @@ After finding the optimal architecture, each NN's weights were trained for diffe
 
 % End of the optimisation part
 
-The original signal and NF data for the continuous spectrum are complex-valued functions. Therefore, two networks with the same architecture are to be used for the whole transformation; each identical part is responsible for the computation of either the real or imaginary parts of the resulting arrays, which contain the values of continuous NF spectrum defined in~Eq.~(\ref{r}).  Fig.~\ref{fig:nn_architecture} depicts the schematic for the entire optimised NFT-Net architecture. The convolutional part consists of three layers with 10, 15 and 10 filters. Kernel sizes of the first and third convolutional layers are 10, and for the layer between them, it is 18. As noted above, we took the dilation value for each layer as one of the sought hyperparameters. For NFT-Net, the optimisation gave that the first two layers have dilation 2, stride 1 and ``tanh'' activation function, and for the third layer, the dilation is 1 with stride 3 and ``ReLu''  activation. After the CNN part we put the flattening layer, not shown in the figure (but affecting the processing complexity), and two fully-connected layers with 4096 and 1024 neurons. The exemplary picture of how the designed NN works on one signal is given in Fig.~\ref{fig:won_spectrum}. In this figure, we show the results of the NN-based NF spectrum computation for the noiseless case. Already from this figure, we can notice that the result produced by our NN and that obtained from conventional NFT routine\cite{FNFT2018} are very similar. 
+The original signal and NF data for the continuous spectrum are complex-valued functions. Therefore, two networks with the same architecture are to be used for the whole transformation; each identical part is responsible for the computation of either the real or imaginary parts of the resulting arrays, which contain the values of continuous NF spectrum defined in~Eq.~(\ref{eq:nlse_r}).  Fig.~\ref{fig:nn_architecture} depicts the schematic for the entire optimised NFT-Net architecture. The convolutional part consists of three layers with 10, 15 and 10 filters. Kernel sizes of the first and third convolutional layers are 10, and for the layer between them, it is 18. As noted above, we took the dilation value for each layer as one of the sought hyperparameters. For NFT-Net, the optimisation gave that the first two layers have dilation 2, stride 1 and ``tanh'' activation function, and for the third layer, the dilation is 1 with stride 3 and ``ReLu''  activation. After the CNN part we put the flattening layer, not shown in the figure (but affecting the processing complexity), and two fully-connected layers with 4096 and 1024 neurons. The exemplary picture of how the designed NN works on one signal is given in Fig.~\ref{fig:wdm_and_spectrum}. In this figure, we show the results of the NN-based NF spectrum computation for the noiseless case. Already from this figure, we can notice that the result produced by our NN and that obtained from conventional NFT routine\cite{FNFT2018} are very similar. 
 
 
-\subsection*{Studying the NFT-Net performance for computing NF spectra of noisy signals}
+\subsection{Studying the NFT-Net performance for computing NF spectra of noisy signals}
 
 In this section we analyse the NFT-Net performance and the denoising property of the NN. We compare the deviations in the obtained nonlinear spectrum calculated with the NFT-Net and calculated with the conventional NFT applied to the same signal without noise. To quantify the performance rendered by the NFT-Net application with the performance of conventional algorithms applied to noisy signals, we use the following metric:
 \begin{equation}
@@ -125,45 +139,45 @@ We stress that the metric was chosen in such a way as to take into account even 
 \begin{minipage}{.47\textwidth}
   \centering
   \includegraphics[width=1.\linewidth]{images/nn_nft/scirep_signal_example.pdf}
-  \caption{Amplitude of original signal}
-  \label{fig:won_signal}
+  \center{(a) Amplitude of original signal}
+  % \label{fig:won_signal}
 \end{minipage}%
 \hfill
 \begin{minipage}{.47\textwidth}
   \centering
   \includegraphics[width=1.\linewidth]{images/nn_nft/scirep_signal_wn_example.pdf}
-  \caption{Amplitude of signal with additional noise}
-  \label{fig:wn_signal}
+  \center{(b) Amplitude of signal with additional noise}
+  % \label{fig:wn_signal}
 \end{minipage}
 \\
 
 \begin{minipage}{.47\textwidth}
   \centering
   \includegraphics[width=1.\linewidth]{images/nn_nft/scirep_cont_spec_example.pdf}
-  \caption{Amplitude of reflection coefficient for continuous spectrum}
-  \label{fig:won_spectrum}
+  \center{(c) Amplitude of reflection coefficient for continuous spectrum}
+  % \label{fig:won_spectrum}
 \end{minipage}
 \hfill
 \begin{minipage}{.47\textwidth}
   \centering
   \includegraphics[width=1.\linewidth]{images/nn_nft/scirep_cont_spec_wn_example.pdf}
-  \caption{Amplitude of reflection coefficient for continuous spectrum}
-  \label{fig:wn_spectrum}
+  \center{(d) Amplitude of reflection coefficient for continuous spectrum}
+  % \label{fig:wn_spectrum}
 \end{minipage}
 \\
 
 \begin{minipage}{.47\textwidth}
   \centering
   \includegraphics[width=1.\linewidth]{images/nn_nft/scirep_spectrum_diff_example.pdf}
-  \caption{Difference between $r(\xi)$ calculated using NFT-Net and Conv. NFT}
-  \label{fig:won_diff}
+  \center{(e) Difference between $r(\xi)$ calculated using NFT-Net and Conv. NFT}
+  % \label{fig:won_diff}
 \end{minipage}
 \hfill
 \begin{minipage}{.47\textwidth}
   \centering
   \includegraphics[width=1.\linewidth]{images/nn_nft/scirep_spectrum_diff_wn_example.pdf}
-  \caption{Difference between $r(\xi)$ calculated using NFT-Net and Conv. NFT}
-  \label{fig:wn_diff}
+  \center{(f) Difference between $r(\xi)$ calculated using NFT-Net and Conv. NFT}
+  % \label{fig:wn_diff}
 \end{minipage}
 
 
@@ -181,7 +195,7 @@ Whence, the white area size in each table demonstrates how well the NFT-Net retr
 % Table 6x2 linear
 \input{main/tables/table_bayes_arch}
 
-Table \ref{tab:nn_with_nft} shows the error values for the restoration of $r(\xi)$ coefficient (\ref{r}) of a noiseless and noisy-perturbed signals (\ref{eq:wdm}), by the NFT-Net architecture given in Fig.~\ref{fig:nn_architecture}. The first row in the table corresponds to the noiseless case. It is always marked with grey, which means that the NN cannot provide any better results than the benchmark ones rendered by the conventional fast NFT method used to generate the training data. 
+Table \ref{tab:nn_with_nft} shows the error values for the restoration of $r(\xi)$ coefficient (\ref{eq:nlse_r}) of a noiseless and noisy-perturbed signals (\ref{eq:wdm}), by the NFT-Net architecture given in Fig.~\ref{fig:nn_architecture}. The first row in the table corresponds to the noiseless case. It is always marked with grey, which means that the NN cannot provide any better results than the benchmark ones rendered by the conventional fast NFT method used to generate the training data. 
 
 However, the values of the error for noise-corrupted signals reveal interesting tendencies. 
 It follows from the table that for the low training noise level (up to 10 dB, columns three through nine), the NFT-Net error is typically lowest for the noiseless validation dataset (second row).
@@ -193,8 +207,8 @@ These results confirm that the presented NN architecture is capable of performin
 
 
 
-The examples of original and noise-corrupted signals and the corresponding nonlinear continuous spectra are given in Fig.~\ref{fig:wdm_and_spectrum}, where we used the NFT-Net for the computations. Figures~\ref{fig:wn_signal} and~\ref{fig:wn_spectrum} show that when the additional noise distorts the signal, the conventional numerical algorithms naturally produce the noise-distorted nonlinear spectra.
-Figs.~\ref{fig:won_diff} and~\ref{fig:wn_diff} show the relative error value $\eta(\xi)$~(\ref{eq:metric}) for the continuous spectrum prediction with NFT-Net for the signal without noise (left) and the signal with noise (right), and the reflection coefficient computed for the original signal by the conventional NFT (marked as ``Conv. NFT'' in the panes' legends). In Figs.~\ref{fig:won_spectrum},~\ref{fig:won_diff}, the NFT-Net is trained on the dataset without adding noise, and in Figs.~\ref{fig:wn_spectrum},~\ref{fig:wn_diff}, the NFT-Net is trained on the dataset with additional noise for SNR = 5 dB. Figs.~\ref{fig:won_spectrum} and~\ref{fig:wn_spectrum} show that in the presence of noise, the fast NFT results begin to deviate noticeably from the original (noiseless) values, while the NFT-Net tends to denoise the resulting nonlinear spectrum.
+The examples of original and noise-corrupted signals and the corresponding nonlinear continuous spectra are given in Fig.~\ref{fig:wdm_and_spectrum}, where we used the NFT-Net for the computations. Figures~\ref{fig:wdm_and_spectrum}b and~\ref{fig:wdm_and_spectrum}d show that when the additional noise distorts the signal, the conventional numerical algorithms naturally produce the noise-distorted nonlinear spectra.
+Figs.~\ref{fig:wdm_and_spectrum}e and~\ref{fig:wdm_and_spectrum}f show the relative error value $\eta(\xi)$~(\ref{eq:metric}) for the continuous spectrum prediction with NFT-Net for the signal without noise (left) and the signal with noise (right), and the reflection coefficient computed for the original signal by the conventional NFT (marked as ``Conv. NFT'' in the panes' legends). In Figs.~\ref{fig:wdm_and_spectrum}c,~\ref{fig:wdm_and_spectrum}e, the NFT-Net is trained on the dataset without adding noise, and in Figs.~\ref{fig:wdm_and_spectrum}d,~\ref{fig:wdm_and_spectrum}f, the NFT-Net is trained on the dataset with additional noise for SNR = 5 dB. Figs.~\ref{fig:wdm_and_spectrum}c and~\ref{fig:wdm_and_spectrum}d show that in the presence of noise, the fast NFT results begin to deviate noticeably from the original (noiseless) values, while the NFT-Net tends to denoise the resulting nonlinear spectrum.
 
 
 
@@ -203,8 +217,8 @@ Figs.~\ref{fig:won_diff} and~\ref{fig:wn_diff} show the relative error value $\e
 
 
 
-\subsection*{NFT-Net performance for the restoration of NF coefficient $b(\xi)$ attributed to noisy signals}
-In addition to the coefficient $r$, from the optical communications perspective it is instructive and important to check how the proposed architecture would work to predict the NF coefficient $b$, Eq.~(\ref{f:ab}). We note that the optical transmission method coined b-modulation \cite{w17,wsh20,svp20}, where we operate with the modulation of the b-coefficient, has proven to be the most efficacious technique among different NFDM methods proposed \cite{yal19,yla19}. Moreover, for the practical case when our signal has a finite extent, the continuous part of the NF spectrum can be completely described by the b-coefficient only, because the second NF coefficient $a(\xi)$ can be calculated from $b(\xi)$ profile, see Eq.~(\ref{a-fin}) in Methods. Our goal here is to demonstrate that the same NFT-Net structures can be used for the both $r(\xi)$ and $b(\xi)$ computation, when the NN is trained on the respective dataset. As the loss function, we now use the MSE build on the b-coefficient samples, and the MSE is also used as our quality metric in the respective tables:
+\subsection{NFT-Net performance for the restoration of NF coefficient $b(\xi)$ attributed to noisy signals}
+In addition to the coefficient $r$, from the optical communications perspective it is instructive and important to check how the proposed architecture would work to predict the NF coefficient $b$, Eq.~(\ref{eq:nlse_ab}). We note that the optical transmission method coined b-modulation \cite{w17,wsh20,svp20}, where we operate with the modulation of the b-coefficient, has proven to be the most efficacious technique among different NFDM methods proposed \cite{yal19,yla19}. Moreover, for the practical case when our signal has a finite extent, the continuous part of the NF spectrum can be completely described by the b-coefficient only, because the second NF coefficient $a(\xi)$ can be calculated from $b(\xi)$ profile, see Eq.~(\ref{a-fin}) in Methods. Our goal here is to demonstrate that the same NFT-Net structures can be used for the both $r(\xi)$ and $b(\xi)$ computation, when the NN is trained on the respective dataset. As the loss function, we now use the MSE build on the b-coefficient samples, and the MSE is also used as our quality metric in the respective tables:
 \begin{equation}
     \eta_b = \frac{1}{S} \, \sum_{i = 1}^{S} \langle \eta_{b,i}(\xi) \rangle_{\xi}, 
     \qquad 
@@ -230,14 +244,14 @@ Figure~\ref{fig:quality_r_b} summarizes the above and shows the calculation erro
 \begin{minipage}{.49\textwidth}
   \centering
   \includegraphics[width=1.\linewidth]{images/nn_nft/scirep_nft_r_metric.pdf}
-  \caption{}
-  \label{fig:quality_r}
+  % \caption{}
+  % \label{fig:quality_r}
 \end{minipage}%
 \begin{minipage}{.49\textwidth}
   \centering
   \includegraphics[width=1.\linewidth]{images/nn_nft/scirep_nft_b_metric.pdf}
-  \caption{}
-  \label{fig:quality_b}
+  % \caption{}
+  % \label{fig:quality_b}
 \end{minipage}
 \caption{\textbf{(a)} The dependence of the error parameter $\eta$~(\ref{eq:metric}) for coefficient $r(\xi)$ on the SNR value of the validation dataset for fast conventional NFT and NFT-Net trained at different noise levels. \textbf{(b)} The same for the error parameter $\eta_b$~(\ref{eq:b_metric}) for coefficient $b(\xi)$. The black line represents the error value for fast NFT applied to noisy signals, and the points below this line refer to the cases when the NFT-Net outperforms conventional computations. Other lines show  the value of the error in calculating the continuous spectrum using NFT-Net, trained with different noise levels: green -- without additional noise, red -- with additional noise with SNR = 30 dB, violet -- at SNR = 20 dB purple -- at SNR = 10 dB, blue -- at SNR = 0 dB.}
 \label{fig:quality_r_b}

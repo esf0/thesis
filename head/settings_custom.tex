@@ -32,13 +32,17 @@
 % \usepackage{hyperref}
 % \usepackage[acronym,toc]{glossaries}
 % \usepackage[ruled,vlined]{algorithm2e}
-% \usepackage{listings}
+\usepackage{listings}
 % \usepackage{tikz}
 % % \usepackage{graphicx}
 % \usepackage{pdflscape} % To change orientation of the page
 % \usepackage{caption}
 % \usepackage{subcaption}
 % \usepackage{float}
+
+\usepackage{enumitem}  % For customizing lists
+
+\usepackage{pdflscape} % for landscape pages
 
 % \usepackage{graphicx}
 % \usepackage{caption}
@@ -80,3 +84,51 @@
 \newcommand{\mT}{\mathbf{T}}
 \newcommand{\vt}{\vartheta}
 \newcommand{\Tr}{\mathrm{Tr}}
+
+
+% \definecolor{codegreen}{rgb}{0,0.6,0}
+% \definecolor{codegray}{rgb}{0.5,0.5,0.5}
+% \definecolor{codepurple}{rgb}{0.58,0,0.82}
+% \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\definecolor{backcolour}{rgb}{0.99, 0.99, 0.95}  % nearly white background
+\definecolor{codegreen}{rgb}{0, 0.6, 0}          % color for comments
+\definecolor{codeblue}{rgb}{0, 0, 0.8}           % color for keywords
+\definecolor{codepurple}{rgb}{0.58, 0, 0.82}     % color for strings
+\definecolor{codegray}{rgb}{0.5, 0.5, 0.5}       % color for numbers
+
+\lstdefinestyle{pystyle}{
+    language=Python,
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    % keywordstyle=\color{magenta},
+    keywordstyle=\color{codeblue},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=1
+}
+
+\lstset{style=pystyle}
+
+
+\newcommand{\sinc}{\mathrm{sinc}\;}
+
+
+% For algorithms
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\renewcommand{\listalgorithmname}{List of algorithms}
+\floatname{algorithm}{Algorithm}
+\usepackage{caption}% http://ctan.org/pkg/caption
+\captionsetup[ruled]{labelsep=period}
+\renewcommand{\thealgorithm}{\arabic{algorithm}}%

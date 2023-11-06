@@ -1,0 +1,180 @@
+% \section{Analyzing Nonlinear Effects on 16-QAM WDM Signal Constellation Points Post-Compensation}
+
+% \subsection{Abstract}
+% In optical communication systems, the rigorous analysis of signal behavior post-compensation for chromatic dispersion and phase equalization is crucial for optimizing performance. This investigation delves into the analysis of 16-QAM Wavelength Division Multiplexing (WDM) signal constellation points post-compensation, revealing complex structural characteristics indicative of nonlinear effects within the channel.
+
+\section{Introduction}
+Optical communication channels often exhibit nonlinear effects that can significantly impact the integrity and recoverability of transmitted signals. Understanding of these effects is essential for designing robust communication systems capable of maintaining high levels of performance. 
+With a deterministic model such as the \Gls{nlse} that closely corresponds with real systems, we can study this behavior in depth. If we consider that we have precise knowledge of the final distribution of constellation points at the receiver for any given input at the transmitter, we can leverage this information to our advantage. As new symbols arrive at the receiver, we might initially be uncertain about their identity. However, with comprehensive knowledge about the ultimate distribution of all constellation points, we can ascertain how likely it is that a new point corresponds to a specific symbol. This approach allows us to accurately map each new point to the correct constellation symbol, enhancing the accuracy of the signal interpretation.
+
+In pursuit of a deeper understanding of these effects, we turn to computational simulations. Specifically, we use a GPU-based simulation package, HpCom, which allows us to generate a large amount of data. By analyzing the internal structure of the received constellation points, we aim to demonstrate that the nonlinear effects induce distinctive patterns in the data. These patterns are not merely noise; they hold valuable information about the behavior of the signal within the fiber. Through detailed analysis, we can begin to reveal these patterns and improve our ability to predict and mitigate the impact of nonlinearity on our communications, pushing the boundaries of what's possible in optical data transmission. 
+
+
+\section{Methodology}
+
+\begin{figure}[htpb]
+    \center{
+        \includegraphics[width=0.7\linewidth]{images/benchmark/ber_vs_p_ave_dbm_z1200.pdf} \\
+    }
+    \caption{BER vs $P_{ave}$ \textrm{[dBm]} for studied system.}
+    \label{fig:ber_vs_pave_z1200}
+\end{figure}
+
+This study focuses on the analysis of a 16-QAM WDM signal, specifically investigating the behavior of received constellation points post-\Gls{cdc} and \Gls{npe}.
+We employed an optical channel model of standard single-mode fiber (SSMF) with erbium-doped fiber amplifiers (EDFAs). The signal format under consideration is a 16-QAM WDM with single polarization and a symbol rate of \(34.4\; \text{GBd}\). Pulse shaping was realized using a digital root-raised cosine (RRC) filter with a roll-off factor of \(0.1\). The total transmission distance spanned \(15\) links of \(80\; \text{km}\) each. The EDFA was assumed to be ideal, introducing no noise. The average signal power varied from \(-2\) to \(8\; \text{dBm}\).
+Signal propagation through the fiber was modeled by the nonlinear Schrödinger equation (NLSE), which was solved using the GPU-accelerated split-step Fourier method\cite{esf0_2023_7880552}. The fiber's parameters were set to a wavelength of \(\lambda = 1550\; \text{nm}\), a dispersion coefficient of \(D = 16.8\; \text{ps/nm}\cdot\text{km}\), and a nonlinear coefficient of \(\gamma = 1.2\; \text{W}^{-1}\cdot\text{km}^{-1}\).
+For the study, we generated \(2^{24}\) data points for each specified average power level.
+
+Figure~\ref{fig:ber_vs_pave_z1200} illustrates the dependence of the \gls{ber} on the average signal power for the system parameters described previously. It depicts two scenarios: one with additional noise from \gls{edfa} and one without. The power range under investigation is selected to align with the optimal levels for real-world transmission systems. As indicated by the graph (represented by the green line), the \gls{ber} reaches its minimum around \(-1\) dBm. It is important to note that, for the purposes of our study, we utilize data from the channel without \gls{edfa} noise. This approach allows us to specifically examine the impact of nonlinearity without the confounding effects of random noise.
+
+
+\begin{figure}[h]
+    \center{
+        \includegraphics[width=1\linewidth]{images/gauss/triplets.pdf}
+    }
+    \caption{Schematic representation of the ``triplet'' concept, illustrating the extraction of data \( b_k \) corresponding to each transmitted triplet \( (c_{k-1}, c_k, c_{k+1}) \).
+}
+    \label{fig:triplet}
+\end{figure}
+
+In this work, we introduce the concept of a ``triplet'', which is defined as a set of three consecutive points consisting of a left, central, and right point (Fig.~\ref{fig:triplet}). On the transmitter side, there is a sequence of transmitted symbols. Unlike real systems where the sequence is continuous and lacks a definitive beginning or end, our simulation employs a cyclic version: \(\{c_0, c_1, \ldots, c_{k-1}, c_k, c_{k+1}, \ldots, c_{K-1}, c_{K}\}\), where \(K\) represents the total number of transmitted symbols. In the continuum of transmitted constellation symbols \(c_k\), a triplet is any set of three points \((c_{k-1}, c_k, c_{k+1})\) for the transmitted sequence. Similarly, for received symbols \(b_k\), we define a triplet as \((b_{k-1}, b_k, b_{k+1})\). Our focus is on the distributions of the received symbol \(b_k\) for a specific transmitted triplet \((c_{k-1}, c_k, c_{k+1})\). In essence, we aim to categorize our dataset and analyze the distributions for \(b_k\) based on the transmitted symbol and its adjacent neighbors.
+
+Within the dataset, we can isolate all points \(b_k\) corresponding to any particular transmitted triplet \((c_{k-1}, c_k, c_{k+1})\). For a 16-\Gls{qam} system, there exist \(16 \times 16 \times 16 = 2^{12}\) potential triplet combinations. With \(2^{24}\) data points in our dataset, this results in approximately \(2^{12}\) data points per triplet, available for further analysis.
+
+The primary model utilized for distribution analysis is the \Gls{gmm}, which will facilitate the understanding of the underlying structure within the received signal constellations.
+
+\subsection{\acrlong{gmm} and likelihood}
+
+A \gls{gmm} is a probabilistic model that assumes all the data points are generated from a mixture of a finite number of Gaussian distributions with unknown parameters. The formula for a GMM can be written as:
+\begin{equation}
+    p(\mathbf{x}) = \sum_{k=1}^K \pi_k \mathcal{N}(\mathbf{x} | \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k) {,}
+    \label{eq:gmm}
+\end{equation}
+where \( \mathbf{x} \) is a data point, \( K \) is the number of Gaussian components, \( \pi_k \) is the mixing coefficient for the \(k\)th Gaussian component (with the constraint \( \sum_{k=1}^K \pi_k = 1 \)), \( \boldsymbol{\mu}_k \) is the mean vector of the \(k\)th Gaussian component, \( \boldsymbol{\Sigma}_k \) is the covariance matrix of the \(k\)th Gaussian component and 
+\( \mathcal{N}(\mathbf{x} | \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k) \) is the Gaussian distribution.
+
+
+In this study we will use likelihood function to compare different models for the same data. The model with the higher likelihood (or higher log-likelihood) is generally considered to have a better fit to the data.
+For a given statistical model and observed data, the likelihood function $L(\theta|x)$ (where $\theta$ represents the parameters of the model and $x$ represents the observed data) quantifies how well the model with specific parameter values explains the data.
+
+Let's consider a simple example for likelihood for single one-dimensional Gaussian distribution.
+The likelihood function $L$ for a Gaussian distribution gives us a measure of how likely it is to observe a given set of data points $(x_1, x_2, \ldots, x_n)$ given the parameters of the Gaussian distribution, specifically the mean $\mu$ and variance $\sigma^2$.
+For a set of independent and identically distributed observations from a Gaussian distribution, the likelihood function is:
+% Likelihood function for a Gaussian distribution
+\begin{equation}
+    L(x_1, x_2, \ldots, x_n | \mu, \sigma^2) = \prod_{i=1}^{n} \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x_i - \mu)^2}{2\sigma^2}\right)
+\end{equation}
+
+The log-likelihood is the natural logarithm of the likelihood function, which turns the product of probabilities into a sum of log probabilities, making it easier to work with especially for computations:
+\begin{equation}
+    \log L(x_1, x_2, \ldots, x_n | \mu, \sigma^2) = \sum_{i=1}^{n} \left[ -\frac{1}{2}\log(2\pi\sigma^2) -\frac{(x_i - \mu)^2}{2\sigma^2} \right]
+\end{equation}
+% Log-Likelihood function for a Gaussian distribution
+
+If we return to two-dimensional case, for \gls{gmm} (Eq.~(\ref{eq:gmm})) the log-likelihood is given by:
+\begin{equation}
+\log p(\mathbf{X} | \boldsymbol{\pi}, \boldsymbol{\mu}, \boldsymbol{\Sigma}) = \sum_{n=1}^N \log \left( \sum_{k=1}^K \pi_k \mathcal{N}(\mathbf{x}_n | \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k) \right) {,}
+\label{eq:loglik}
+\end{equation}
+where single two-dimensional datapoint $\mathbf{x_n} \in \mathbf{X}$ and \(k\) is the number of corresponding Gaussian component.
+
+\subsection{Model fitting}
+
+As previously discussed, within the dataset, we isolate all points \( b_k \) corresponding to any particular transmitted triplet \( (c_{k-1}, c_k, c_{k+1}) \). For each triplet in the 16-\Gls{qam} system, this results in approximately \( 2^{12} \) data points. Given the \( 2^{12} \) combinations of triplets, we conduct a comprehensive analysis in the following manner. Initially, we assign to each triplet a unique identifier (ID) for ease of representation. Several IDs that will be referenced in this text are listed in Table~\ref{tab:triplet_ids}:
+\begin{table}[h]
+    \caption{Triplet unique identifiers (IDs)}
+    \begin{center}
+        \begin{tabular}{cccc}
+            \hline
+            Left point & Central point & Right point & identifier (ID)\\ 
+            \hline
+            $1+3\mathrm{i}$ & $1+3\mathrm{i}$ & $3+1\mathrm{i}$ & 552 \\ %1+3j, 1+3j, 3+1j
+            $-1-1\mathrm{i}$ & $1+1\mathrm{i}$ & $-1-1\mathrm{i}$ & 1285 \\ %-1-1j, 1+1j, -1-1j
+            $3+3\mathrm{i}$ & $3+3\mathrm{i}$ & $3+3\mathrm{i}$ & 2730 \\ %3+3j, 3+3j, 3+3j
+            $3-3\mathrm{i}$ & $3-3\mathrm{i}$ & $1-1\mathrm{i}$ & 2993 \\ %3-3j, 3-3j, 1-1j
+            \hline
+        \end{tabular}
+    \label{tab:triplet_ids}
+    \end{center}
+\end{table} % ID 2730 $[3+3\mathrm{i}, 3+3\mathrm{i}, 3+3\mathrm{i}]$ and ID 1285 $[-1-1\mathrm{i}, 1+1\mathrm{i}, -1-1\mathrm{i}]$ ID 2993 $[3-3\mathrm{i}, 3-3\mathrm{i}, 1-1\mathrm{i}]$ and ID 552 $[1+3\mathrm{i}, 1+3\mathrm{i}, 3+1\mathrm{i}]$
+For these triplets, we gather all corresponding points \( b_k \) and create a centered distribution of \( b_k - c_k \). Although fitting the distribution is possible without this centering process, shifting the received points to align with the transmitted points simplifies the representation and interpretation of the data. Subsequently, we employ the BRMLtoolbox~\cite{barberBRML2012} to fit a \gls{gmm} distribution to the centered data. The analysis includes fitting \gls{gmm} models with a number of Gaussian components ranging from one to five. For instance, a \gls{gmm} with two components yields the following properties from the fitting process:
+\begin{enumerate}
+    \item \textbf{Log-likelihood.} Log-likelihood of the data for the particular \gls{gmm} parameters. The log-likelihood is given by Eq.~(\ref{eq:loglik}).
+
+    \item \textbf{Mixing coefficients.} \( \pi_1 \) and \( \pi_2 \) are the mixing coefficient for the first and second Gaussian components respectively (\( \pi_1 + \pi_2 = 1 \)).
+
+    \item \textbf{Mean Vectors.} For the first and second Gaussian component:
+    \[
+    \boldsymbol{\mu}_1 = \begin{pmatrix} \mu_{1,1} \\ \mu_{2,1} \end{pmatrix} \quad \text{and} \quad 
+    \boldsymbol{\mu}_2 = \begin{pmatrix} \mu_{1,2} \\ \mu_{2,2} \end{pmatrix} {.}
+    \]
+    
+    \item \textbf{Covariance Matrices.} For the first and second Gaussian component:
+    \[
+    \boldsymbol{\Sigma}_1 = \begin{pmatrix} \sigma_{11,1} & \sigma_{12,1} \\ \sigma_{21,1} & \sigma_{22,1} \end{pmatrix}
+    \quad \text{and} \quad
+    \boldsymbol{\Sigma}_2 = \begin{pmatrix} \sigma_{11,2} & \sigma_{12,2} \\ \sigma_{21,2} & \sigma_{22,2} \end{pmatrix} {.}
+    \]
+    
+    \item \textbf{Eigenvalues.} The eigenvalues of the covariance matrices could be obtained by solving the characteristic equation \(\text{det}(\boldsymbol{\Sigma} - \lambda \boldsymbol{I}) = 0\), where \(\boldsymbol{I}\) is the identity matrix. For the first and second Gaussian components, the eigenvalues could be represented as follows:
+    \[
+    \boldsymbol{\lambda}_1 = \begin{pmatrix} \lambda_{1,1} \\ \lambda_{2,1} \end{pmatrix} \quad \text{and} \quad 
+    \boldsymbol{\lambda}_2 = \begin{pmatrix} \lambda_{1,2} \\ \lambda_{2,2} \end{pmatrix} {.}
+    \]
+\end{enumerate}
+
+For other numbers of Gaussian components, the data is processed in a similar manner. All fitting results are stored for further analysis and are accessible from my GitHub repository or via email. Detailed information and data sets can be obtained through the following repository link or by contacting me directly\footnote{GitHub Repository: \href{https://github.com/esf0}{https://github.com/esf0}. Email: \href{mailto:egor.sedoff@gmail.com}{egor.sedoff@gmail.com}}. In the subsequent section, specific results and insights gleaned from the data will be presented.
+
+
+\section{Results}
+
+\input{main/error_statistics/fig_2d_t552_compare}
+
+\input{main/error_statistics/fig_2d_t2730_compare}
+
+After the comprehensive data collection and fitting of distributions for all conceivable triplets, we begin our discussion with visual illustrations.
+
+Figures~\ref{fig:gauss_triplet_552_compare_2d} and~\ref{fig:gauss_triplet_2730_compare_2d} depict the distributions of the received constellation points \( b_k \), centered with respect to the transmitted symbol \( c_k \) (after \gls{cdc} and \gls{npe}). Essentially, these figures represent the received symbols after subtracting the original transmitted symbol, corresponding to specific ``triplets''. Figure~\ref{fig:gauss_triplet_552_compare_2d} presents the distribution for triplet 552, whereas Figure~\ref{fig:gauss_triplet_2730_compare_2d} displays the distribution for triplet 2730. Notably, these distributions arise from nonlinear effects during the propagation of the WDM signal through the optical fiber, as the system excludes additional noise from EDFA amplifiers.
+
+Both Figures~\ref{fig:gauss_triplet_552_compare_2d} and~\ref{fig:gauss_triplet_2730_compare_2d} are structured as follows: rows correspond to different average signal power levels (first row at \(-2\) dBm, second at \(0\) dBm, third at \(4\) dBm, and fourth at \(8\) dBm). The first column illustrates the distribution of simulation data for a real communication system with the aforementioned parameters. These distributions are then fitted with a \gls{gmm}, and the derived parameters are used to generate the visualizations in the second and third columns. The second column represents the distribution fitted with a single two-dimensional Gaussian distribution, while the third column visualizes a mixture of two Gaussians, each column containing \(100000\) randomly generated points.
+
+Examining Figure~\ref{fig:gauss_triplet_552_compare_2d}, at low average signal power, the GMMs with one and two components appear similar; however, the distribution for a single-component GMM is broader, indicating discernible differences. At \(0\) dBm average power, the distinction remains, though both distributions seem to fit the simulation reasonably well. The disparity becomes more visible at higher power levels, where the two-component GMM notably deviates from a Gaussian shape.
+
+A comparable behaviour we can see for triplet 2730 in Figure~\ref{fig:gauss_triplet_2730_compare_2d}. At lower average signal powers, the distributions vary but are distinct. A striking example is at the highest power level (last row), where both the simulation distribution and the GMM with two components form a distinctive shape of a German pretzel. It is evident that a single-component GMM fails to accurately represent this distribution.
+
+These figures are merely exemplars out of \(4096\) different triplet distributions, yet they offer a compelling demonstration that the internal structure of distributions can be intricate and extend well beyond simple Gaussian forms.
+
+
+\input{main/error_statistics/fig_violin_different_power}
+
+Having observed that the shape of distributions for certain triplets can markedly differ when using single or multi-component \gls{gmm}, we now proceed to compare the likelihoods of these distributions. To this end, we employ the log-likelihood measure described in the previous section (see Eq.~(\ref{eq:loglik})) to test the hypothesis that our simulation distribution corresponds to a specific \gls{gmm}. Figure~\ref{fig:violin_different_mix} presents violin plots\footnote{A violin plot is a method of plotting numeric data and can be understood as a combination of a box plot and a kernel density plot. It includes a marker for the median of the data and a box indicating the interquartile range, as seen in standard box plots, overlaid with a kernel density estimation.} that illustrate the log-likelihood distribution for different average signal powers and numbers of components in the \gls{gmm}. The x-axis of each plot denotes the number of components in the \gls{gmm}, while the y-axis shows the distribution of log-likelihood values across all possible triplets. This visualization method is particularly useful given the \(2^{12}\) possible triplet combinations, which would be exceedingly challenging to depict using line plots (as demonstrated in Fig.~\ref{fig:lines_different_mix}). The average power in the graphs on Fig.~\ref{fig:violin_different_mix} ranges from -2 dBm (upper left) to 8 dBm (lower right).
+
+Regardless of the log-likelihood values, all graphs consistently reveal that the likelihood for a single-component \gls{gmm} is significantly lower compared to a \gls{gmm} with 2, 3, 4, or 5 components, which all exhibit approximately the same log-likelihood values. This pattern holds across all levels of average signal power. However, what varies with the power is the actual value of the log-likelihood. The principal finding, however, is as follows: the likelihood that our experimental data are drawn from a single-component \gls{gmm} is exceedingly low compared to that from a multi-component \gls{gmm}. This observation aligns with our earlier discussions: a standard Gaussian distribution does not adequately fit the experimental data, necessitating the use of a more complex model comprising multiple Gaussian components.
+
+\input{main/error_statistics/fig_violin_different_mixtures}
+
+Figure~\ref{fig:violin_different_power} presents a violin plot of the log-likelihood for triplets across various power levels, contrasting a mixture with one component (left panel) against two components (right panel). In both instances, the average log-likelihood value decreases as the power increases, suggesting the potential for more intricate structural characteristics within the distribution. Notably, even at higher power levels, the two-component \gls{gmm} provides a markedly superior fit to the experimental data; for instance, at 8 dBm, the average log-likelihood value for a single component is approximately \(-50000\), whereas for two components it is around \(-16000\). Although these values alone do not conclusively indicate that the experimental data correspond to a particular type of distribution, they do offer insights that a more suitable model might exist to describe such distributions. Furthermore, as illustrated in Fig.~\ref{fig:violin_different_power}, the decline in average log-likelihood is consistent and nearly linear with increasing average power. This observation, coupled with insights from Fig.~\ref{fig:violin_different_mix}, indicates that adding more components to the mixture does not enhance the likelihood significantly. Therefore, for our simulations, a two-component mixture is deemed sufficient for an initial approximation of data representation.
+
+\input{main/error_statistics/fig_lines_different_mixtures}
+
+Figures~\ref{fig:lines_different_mix} and~\ref{fig:loglik_for_triplets} offer a different view of the same data depicted by the violin plots in Figures~\ref{fig:violin_different_mix} and~\ref{fig:violin_different_power}, focusing on specific triplets. This perspective is valuable because violin plots can obscure the behavior of log-likelihood for individual triplets. These figures confirm a consistent finding: there is a substantial difference in the log-likelihood values between the single Gaussian model and a mixture of several Gaussians. The log-likelihood stabilizes with an increasing number of components in the \gls{gmm}, indicating that a mixture of two Gaussians is typically adequate. The same trend is observed with the log-likelihood's response to signal power: it decreases linearly as the average power increases. Additionally, for a \gls{gmm} with two components, the lines representing different triplets do not cross, affirming the consistency of this pattern.
+
+
+\begin{figure}[htpb]
+    \center{
+        \includegraphics[width=0.7\linewidth]{images/gauss/bigf_loglik_for_triplet.pdf} \\
+    }
+    \caption{Dependence of log-likelihood for triplet distribution on average signal power for different number of components in \gls{gmm}. Graph shows triplets with ID 2730 $[3+3\mathrm{i}, 3+3\mathrm{i}, 3+3\mathrm{i}]$, ID 1285 $[-1-1\mathrm{i}, 1+1\mathrm{i}, -1-1\mathrm{i}]$, ID 2993 $[3-3\mathrm{i}, 3-3\mathrm{i}, 1-1\mathrm{i}]$ and ID 552 $[1+3\mathrm{i}, 1+3\mathrm{i}, 3+1\mathrm{i}]$.}
+    \label{fig:loglik_for_triplets}
+\end{figure}
+
+\section{Conclusion}
+In summarizing the findings from our analysis, we have identified that while the \Gls{gmm} provides an improved fit over a single Gaussian model for the received signal distributions in a 16-QAM WDM optical communication system, the likelihood does not increase with additional Gaussian components. This suggests a saturation point in the utility of adding complexity to the GMM for this system. Consequently, future work should consider exploring more complex distributions beyond GMMs to ascertain if other types or combinations may yield a more accurate representation of the experimental data.
+
+For practical applications, the next steps include the development of an algorithm that leverages GMM to predict which distribution a received point corresponds to. By evaluating the likelihood for different distributions, we can ascertain the most probable model for a given signal point. Advanced techniques, such as message passing algorithms, may enhance this predictive capability.
+
+Furthermore, the insights gained from analyzing the distribution of received points could inform channel monitoring strategies. Significant deviations from the expected distribution pattern might indicate systemic issues, offering a diagnostic tool to ensure the integrity of optical communication systems.
+
+Extending this analysis to other modulation formats and system types is a viable direction for further research. Utilizing the HpCom package can facilitate the creation of corresponding statistics, enabling a comprehensive investigation across various system configurations.
+
+By adopting this focused approach to further analysis, we can expand our understanding of optical communication systems and improve their performance and reliability.
