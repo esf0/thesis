@@ -3,7 +3,7 @@ One of the important metrics in the development of signal processing tools is th
 Quite often we need to analyse the interplay between the complexity and accuracy of the processing unit. Thus, here we perform the complexity analysis for the NFT-Net.
 
 In our case, we concentrate only on the number of multiplications, since in practical implementation the computational complexity of addition operations is negligible. 
-The number of real multiplications needed for the forward propagation of the model, as introduced in \cite{freire2021performance} for several types of NN layers, is also used to calculate the computational complexity of the NFT-Net in this paper. 
+The number of real multiplications needed for the forward propagation of the model, as introduced in \cite{freire2021performance} for several types of NN layers, is also used to calculate the computational complexity of the NFT-Net in this research. 
 
 The overall complexity $C$ of the NFT-Net can be presented as the sum of two constituents: the complexity of densely-connected block $C_{\text{dense}}$ and the complexity of convolutional block $C_{\text{conv}}$. 
 For the calculation of $C_{\text{dense}}$ the same formula as in \cite{freire2021performance} can be used, where we have $n_i$ inputs, $n_1$ neurons in the hidden layers, and $n_o$ outputs, and the complexity is defined as:
@@ -18,7 +18,7 @@ C_{\text{conv, layer}} = k \cdot Q_{in} \cdot f \cdot \left( \frac{L_{in} + 2\cd
 \label{eq:c_conv}
 \end{equation}
 where $Q_{in}$ denotes a number of channels, $L_{in}$ is a length of signal samples sequence.
-Therefore, the total complexity of the NFT-Net used in this paper in terms of real multiplications per output sequence (1024 complex valued points) is:
+Therefore, the total complexity of the NFT-Net in terms of real multiplications per output sequence (1024 complex valued points) is:
 \begin{equation}
 C_{\text{conv}} = 2 \cdot (C_{\text{conv, 1}}+C_{\text{conv, 2}}+C_{\text{conv, 3}}+C_{\text{dense}}) {,}
 \label{eq:c_total}

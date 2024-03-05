@@ -2,16 +2,16 @@
 
 \subsection{Modulation formats}
 
-In optical communication systems, a variety of modulation formats are employed to encode information onto light waves for transmission. Among these, On-Off Keying (OOK) is a basic form where the presence or absence of a light pulse represents binary one or zero, respectively. Phase-Shift Keying (PSK) takes a step further by modulating the phase of the optical signal to represent data, with common variants like Binary Phase-Shift Keying (BPSK) and Quadrature Phase-Shift Keying (QPSK) representing one or two bits per symbol. Differential modulation, such as Differential Phase-Shift Keying (DPSK) and Differential Quadrature Phase-Shift Keying (DQPSK), modulates the phase information relative to the previous symbol, which can be advantageous in certain channel conditions. Pulse Amplitude Modulation (PAM) modulates the amplitude of the optical pulses to encode data.
+In optical communication systems, a variety of modulation formats are employed to encode information onto light waves for transmission. Among these, \acrfull{ook} is a basic form where the presence or absence of a light pulse represents binary one or zero, respectively. \acrfull{psk} takes a step further by modulating the phase of the optical signal to represent data, with common variants like \acrfull{bpsk} and \acrfull{qpsk} representing one or two bits per symbol. Differential modulation, such as \acrfull{dpsk} and \acrfull{dqpsk}, modulates the phase information relative to the previous symbol, which can be advantageous in certain channel conditions. \acrfull{pam} modulates the amplitude of the optical pulses to encode data.
 
-\textit{Bitrate} and \textit{baud rate} are fundamental concepts in digital communication systems, serving as measures of data transmission and symbol modulation rates respectively. The bitrate, also known as bit rate or data rate, signifies the rate at which bits are transmitted over a communication channel per unit time. It is quantified in bits per second (bps). The bitrate provides insight into the communication system's capacity to convey information over a period. A higher bitrate denotes a higher data transmission rate, which often translates to faster communication. The \textit{baud rate}, on the other hand, represents the rate of symbol changes or modulations on the communication channel per unit time. It is measured in symbols per second or baud (Bd). In digital communications, a symbol could represent one or more bits depending on the modulation scheme. For instance, in Binary Phase-Shift Keying (BPSK), one symbol corresponds to one bit, but in Quadrature Amplitude Modulation (QAM), a symbol could represent multiple bits. The relationship between bitrate and baud rate can be expressed using the following formula, where $M$ is the number of bits per symbol:
+\textit{Bitrate} and \textit{baud rate} are fundamental concepts in digital communication systems, serving as measures of data transmission and symbol modulation rates respectively. The bitrate, also known as bit rate or data rate, signifies the rate at which bits are transmitted over a communication channel per unit time. It is quantified in bits per second (bps). The bitrate provides insight into the communication system's capacity to convey information over a period. A higher bitrate denotes a higher data transmission rate, which often translates to faster communication. The \textit{baud rate}, on the other hand, represents the rate of symbol changes or modulations on the communication channel per unit time. It is measured in symbols per second or baud (Bd). In digital communications, a symbol could represent one or more bits depending on the modulation scheme. For instance, in \acrshort{bpsk}, one symbol corresponds to one bit, but in \acrfull{qam}, a symbol could represent multiple bits. The relationship between bitrate and baud rate can be expressed using the following formula, where $M$ is the number of bits per symbol:
 \begin{equation}
 \text{Bitrate} = \text{Baud Rate} \times M
 \end{equation}
 
-In this work, our focus narrows down to Quadrature Amplitude Modulation (QAM), a sophisticated modulation format that encodes data by modulating both the amplitude and phase of the optical signal. QAM combines the principles of both amplitude and phase modulation, thereby enabling the transmission of multiple bits per symbol. This feature significantly enhances the spectral efficiency of the communication system. Commonly used QAM formats include 16-QAM, 64-QAM, and 256-QAM, named for the number of distinct symbols or states they have, which are 16, 64, and 256 respectively. The main parameters of the systems, depending on the constellation diagram, are presented in Table~\ref{tab:modulation}.
+In this work, our focus narrows down to \acrlong{qam}, a sophisticated modulation format that encodes data by modulating both the amplitude and phase of the optical signal. \acrshort{qam} combines the principles of both amplitude and phase modulation, thereby enabling the transmission of multiple bits per symbol. This feature significantly enhances the spectral efficiency of the communication system. Commonly used \acrshort{qam} formats include 16-\acrshort{qam}, 64-\acrshort{qam}, and 256-\acrshort{qam}, named for the number of distinct symbols or states they have, which are 16, 64, and 256 respectively. The main parameters of the systems, depending on the constellation diagram, are presented in Table~\ref{tab:modulation}.
 \begin{table}[h]
-    \caption{QAM formats, Bit rate and Baud rate comparison}
+    \caption{\acrshort{qam} formats, Bit rate and Baud rate comparison}
     \begin{center}
         \begin{tabular}{cccc}
             \hline
@@ -30,7 +30,7 @@ In this work, our focus narrows down to Quadrature Amplitude Modulation (QAM), a
     \label{tab:modulation}
     \end{center}
 \end{table}
-Although the first three types of modulation in the Table are called phase-shift keying (PSK), they can be represented via QAM modulation. 
+Although the first three types of modulation in the Table are called \acrfull{psk}, they can be represented via \acrshort{qam} modulation. 
 
 
 \begin{figure}[tpb]
@@ -57,11 +57,11 @@ Although the first three types of modulation in the Table are called phase-shift
         \includegraphics[width=1\linewidth]{images/theory/64qam.png} d)
     }
     \end{minipage}
-    \caption{Constellation diagrams for (a) QPSK, (b) 8-PSK, (c) 16-QAM and (d) 64-QAM.}
+    \caption{Constellation diagrams for (a) \acrshort{qpsk}, (b) 8-\acrshort{psk}, (c) 16-\acrshort{qam} and (d) 64-\acrshort{qam}.}
     \label{fig:constil}
 \end{figure}
 
-In QAM, data is represented by a constellation diagram, where each point on the constellation corresponds to a unique symbol. The position of each point is determined by both its amplitude and phase, allowing for the encoding of multiple bits per symbol. Examples of constellation diagrams used in the work are presented in Fig.~\ref{fig:constil}. For instance, in 16-QAM, the constellation diagram consists of 16 distinct points arranged in a square grid, allowing for the transmission of 4 bits per symbol. The decoding process in the receiver involves identifying the closest constellation point to the received signal, from which the encoded bits are then retrieved. The choice of QAM as a modulation format strikes a balance between the data rate, spectral efficiency, and system robustness, making it a compelling choice for high-speed optical communication systems.
+In \acrshort{qam}, data is represented by a constellation diagram, where each point on the constellation corresponds to a unique symbol. The position of each point is determined by both its amplitude and phase, allowing for the encoding of multiple bits per symbol. Examples of constellation diagrams used in the work are presented in Fig.~\ref{fig:constil}. For instance, in 16-\acrshort{qam}, the constellation diagram consists of 16 distinct points arranged in a square grid, allowing for the transmission of 4 bits per symbol. The decoding process in the receiver involves identifying the closest constellation point to the received signal, from which the encoded bits are then retrieved. The choice of \acrshort{qam} as a modulation format strikes a balance between the data rate, spectral efficiency, and system robustness, making it a compelling choice for high-speed optical communication systems.
 
 \subsection{Performance Metrics in Optical Communication Systems}
 
@@ -69,20 +69,20 @@ In QAM, data is represented by a constellation diagram, where each point on the 
 In optical communication systems, evaluating the performance and reliability of data transmission is crucial. Prominent metrics such as \gls{ber}, \gls{evm}, and \gls{mi} are employed for this purpose. Here's an overview of these metrics:
 
 \subsubsection{Bit Error Rate (BER)}
-Bit Error Rate (BER) is a pivotal metric that quantifies the number of bit errors (incorrectly received bits) per unit time. It's a direct indicator of the system's error performance.
+\acrfull{ber} is a pivotal metric that quantifies the number of bit errors (incorrectly received bits) per unit time. It's a direct indicator of the system's error performance.
 
 \begin{equation}
 \text{BER} = \frac{\text{Number of bit errors}}{\text{Total number of bits transmitted}}
 \end{equation}
 
-The measured (or estimated) BER is usually converted to an equivalent Gaussian noise Q-factor in $\mathrm{dB}$ using the expression:
+The measured (or estimated) \acrshort{ber} is usually converted to an equivalent Gaussian noise Q-factor in $\mathrm{dB}$ using the expression:
 \begin{equation}
 Q_{\mathrm{BER}}=20 \cdot \log _{10}\left(\sqrt{2} \operatorname{erfc}^{-1}(2 \mathrm{BER})\right),
 \end{equation}
 where $\operatorname{erfc}^{-1}$ is the inverse complementary error function. This sets the reference Q-factor used in the following evaluation of different indirect methods.
 
 \subsubsection{Error Vector Magnitude (EVM)}
-Error Vector Magnitude (EVM) serves as a measure of modulation quality and error performance. It appose the ideal symbol points to the actual symbol points received, providing insight into the distortion induced during transmission.
+\acrfull{evm} serves as a measure of modulation quality and error performance. It appose the ideal symbol points to the actual symbol points received, providing insight into the distortion induced during transmission.
 
 \begin{equation}
 \text{EVM} = \sqrt{\frac{\sum \left(\text{Ideal symbol point} - \text{Received symbol point}\right)^2}{\sum \left(\text{Ideal symbol point}\right)^2}}
@@ -154,7 +154,7 @@ These metrics collectively offer a comprehensive understanding of the system's e
 \section{Signal Formats}
 \label{sec:signals}
 
-\subsection{\acrlong{wdm}}
+\subsection{Wavelength Division Multiplexing}
 \acrfull{wdm} is a pivotal technology in optical communications, enabling the simultaneous transmission of multiple signals along the same fiber-optic cable, each at a unique wavelength. This effectively multiplies the capacity of the channel, making efficient use of the available bandwidth.
 
 The optical signal  for \Gls{wdm} transmission is represented as a superposition of modulated signals, each associated with a distinct wavelength or frequency. The expression for 
@@ -174,7 +174,7 @@ A_y(t)=\sqrt{\frac{P_0}{2}} \sum_{k=1}^K \sum_{n=1}^{N_{ch}}  c_{kn,y} f(t-kT)  
 where $c_{kn,x}$ and $c_{kn,y}$ are the complex constellation points of the 
 $k$th symbol on the 
 $n$th channel for the $x$ and $y$ polarizations, respectively.
-In this work we always suppose that number of symbols and number of WDM channels for each polarisation are the same. 
+In this work we always suppose that number of symbols and number of \acrshort{wdm} channels for each polarisation are the same. 
 
 
 % \begin{equation}
@@ -192,20 +192,20 @@ where $b_k$ is the demodulated symbol, $f^{*}(t - kT)$ is the complex conjugate 
 The matched filter is an essential component in digital communication systems, utilized at the receiver to maximize the \gls{snr} for a given received signal, thereby facilitating optimal symbol detection. The impulse response of a matched filter is crafted to be a time-reversed and conjugated version of the transmitted signal's waveform. In mathematical terms, if \( f(t) \) is the transmitted signal waveform, the impulse response \( h(t) \) of the matched filter is given by \( h(t) = f^*(-t) \), where \( * \) denotes complex conjugation.
 
 When the received signal traverses the matched filter, the output at the sampling instant yields the optimal \Gls{snr}, making it simpler to detect the transmitted symbols amidst noise. The employment of a matched filter is particularly beneficial in environments laden with significant noise and interference, as it markedly enhances the reliability of symbol detection.
-In our case we have time symmetry and always $f(t) = f(-t)$. So Eq.~(\ref{eq:wdm_matched_filter}) represents matched filter for WDM receiver.
+In our case we have time symmetry and always $f(t) = f(-t)$. So Eq.~(\ref{eq:wdm_matched_filter}) represents matched filter for \acrshort{wdm} receiver.
 
 Note that the integral in Eq.~(\ref{eq:wdm_matched_filter}) represents the convolution of the output signal with the function \(f^{*}\). A similar integral expression, albeit in discrete form, can be observed in Eqs.~(\ref{eq:wdm_nlse}) and~(\ref{eq:wdm_manakov}). The summation \(\sum_{n=1}^{N_{ch}}  c_{kn}   f(t-kT)\) serves as a discrete analog of the convolution operation between the discrete points \(c_{kn}\) and the function \(f(t)\). This characteristic is leveraged for practical implementation, aiding in efficient GPU acceleration for numerical simulations, which will be elaborated upon in Chapter~\ref{ch:hpcom}.
 
 \subsubsection{Carrier Pulse}
 The choice of carrier pulse shape is crucial as it greatly influences the system's performance, particularly regarding bandwidth efficiency and inter-symbol interference.
 
-A common choice for the carrier pulse in WDM systems is the Gaussian pulse, valued for its spectral efficiency and simplicity. The Gaussian pulse has a continuous waveform, with its shape defined by the Gaussian function. Another alternative could be the \gls{rc} or \gls{rrc} pulses, frequently chosen due to their ability to control bandwidth and minimize inter-symbol interference.
+A common choice for the carrier pulse in \acrshort{wdm} systems is the Gaussian pulse, valued for its spectral efficiency and simplicity. The Gaussian pulse has a continuous waveform, with its shape defined by the Gaussian function. Another alternative could be the \gls{rc} or \gls{rrc} pulses, frequently chosen due to their ability to control bandwidth and minimize inter-symbol interference.
 
-The choice between \Gls{rrc} and \Gls{rc} filters is driven by the specific requirements of a communication system. However, there are particular advantages associated with the \Gls{rrc} filter which often make it a preferred choice over the \Gls{rc} filter. One of the advantages is the pulse shaping and matched filtering. While the \Gls{rc} filter can be used for pulse shaping at the transmitter or receiver, the \Gls{rrc} filter is designed to be used both at the transmitter and the receiver. When an \Gls{rrc} filter is used at both ends, the combined response is a Raised Cosine filter, which provides optimal ISI mitigation. This split of filtering responsibility between the transmitter and receiver can simplify the design and implementation of the filtering process.
+The choice between \Gls{rrc} and \Gls{rc} filters is driven by the specific requirements of a communication system. However, there are particular advantages associated with the \Gls{rrc} filter which often make it a preferred choice over the \Gls{rc} filter. One of the advantages is the pulse shaping and matched filtering. While the \Gls{rc} filter can be used for pulse shaping at the transmitter or receiver, the \Gls{rrc} filter is designed to be used both at the transmitter and the receiver. When an \Gls{rrc} filter is used at both ends, the combined response is a Raised Cosine filter, which provides optimal \acrshort{isi} mitigation. This split of filtering responsibility between the transmitter and receiver can simplify the design and implementation of the filtering process.
 
 % TODO: check forms
 
-Without loss of generality in this thesis, we consider the following different return-to-zero (RZ) carrier functions. First example is the function which has cosine slopes and flat central part:
+Without loss of generality in this thesis, we consider the following different \acrfull{rz} carrier functions. First example is the function which has cosine slopes and flat central part:
 \begin{equation}
     f(t)=
     \left\{
@@ -218,7 +218,7 @@ Without loss of generality in this thesis, we consider the following different r
 \end{equation}
 where {T} is symbol interval.
 
-As a carrier function, one can also use other RZ functions, for example one period of cosine function, which shifted to make overall function positive on the time interval.
+As a carrier function, one can also use other \acrshort{rz} functions, for example one period of cosine function, which shifted to make overall function positive on the time interval.
 \begin{equation}
     f(t)=
     \frac{1}{2}\left[1 - \cos\left(\frac{2\pi t}{T}\right)\right] {,} \; \; 0 \le t \le T {,} 
@@ -251,7 +251,7 @@ As a carrier function, one can also use other RZ functions, for example one peri
         \includegraphics[width=1\linewidth]{images/theory/rrc.pdf} (d)
     }
     \end{minipage}
-    \caption{Examples of carrier functions for WDM signal. \textbf{(a)} function for Eq.~(\ref{eq:wdm_carrier}), \textbf{(b)} function for Eq.~(\ref{eq:wdm_carrier2}), \textbf{(c)} function for \gls{rc} (Eq.~(\ref{eq:rc_time})) and \textbf{(d)} for \gls{rrc} (Eq.~(\ref{eq:rc_time}).}
+    \caption{Examples of carrier functions for \acrshort{wdm} signal. \textbf{(a)} function for Eq.~(\ref{eq:wdm_carrier}), \textbf{(b)} function for Eq.~(\ref{eq:wdm_carrier2}), \textbf{(c)} function for \gls{rc} (Eq.~(\ref{eq:rc_time})) and \textbf{(d)} for \gls{rrc} (Eq.~(\ref{eq:rc_time}).}
     \label{fig:f_shapes}
 \end{figure}
 
@@ -281,7 +281,9 @@ For \Gls{nft} analysis, we will focus on the study of symbols with a carrier fun
 
 
 
-\subsection{\acrlong{ofdm}}
+\subsection{
+Orthogonal Frequency-Division Multiplexing
+}
 \label{sec:ofdm}
 
 \gls{ofdm} signal combines modulation and multiplexing. To form a symbol, the term "subcarrier"\ is used, which in fact is one of the Fourier harmonics in the frequency space from which the signal is formed. One isolated symbol on a time slot of $ T $ is the sum of independent subcarriers modulated according to the chosen modulation type:
@@ -296,7 +298,7 @@ Depending on the modulation type, the corresponding constellation diagram is sel
 
 In practice, the number of subcarriers is chosen as $N = 2^p$ ($p$ is a positive integer) in order to use the \gls{fft} algorithms. 
 % The scheme of forming the OFDM signal is shown in Fig.~\ref{fig:ofdm}. 
-The input is serial data which is divided into $N$ parallel threads. Each data stream is encoded according to the selected modulation format (QPSK or QAM). Each individual stream corresponds to a specific frequency, and the encoded data determines the complex amplitude for that frequency. Thus obtained N numbers are used further in the \Gls{fft}, the result of which is the one OFDM symbol. 
+The input is serial data which is divided into $N$ parallel threads. Each data stream is encoded according to the selected modulation format (\acrshort{qpsk} or \acrshort{qam}). Each individual stream corresponds to a specific frequency, and the encoded data determines the complex amplitude for that frequency. Thus obtained N numbers are used further in the \Gls{fft}, the result of which is the one \acrshort{ofdm} symbol. 
 
 % \begin{figure}[htpb]
 %     \center{
@@ -306,15 +308,15 @@ The input is serial data which is divided into $N$ parallel threads. Each data s
 %     \label{fig:ofdm}
 % \end{figure}
 
-Orthogonal Frequency Division Multiplexing (OFDM) signal generation in a practical scenario encompasses multiple symbols, a guard interval, and a cyclic prefix to mitigate Inter-Symbol Interference (ISI) and ensure seamless reception. 
-When transmitting multiple OFDM symbols, the signal \( A(t) \) over multiple symbol intervals is represented as a sum over all symbols \( K \) and all sub-carriers \( N \) as follows:
+\acrfull{ofdm} signal generation in a practical scenario encompasses multiple symbols, a guard interval, and a cyclic prefix to mitigate \acrfull{isi} and ensure seamless reception. 
+When transmitting multiple \acrshort{ofdm} symbols, the signal \( A(t) \) over multiple symbol intervals is represented as a sum over all symbols \( K \) and all sub-carriers \( N \) as follows:
 \begin{equation}
 A(t) = \sum_{k=0}^{K-1} \sum_{n=0}^{N-1} c_{kn} \cdot e^{i \frac{2 \pi k}{T} (t - kT)}
 \label{eq:ofdm_signal}
 \end{equation}
-where\( K \) is the total number of OFDM symbols, \( T \) is the symbol duration.
+where\( K \) is the total number of \acrshort{ofdm} symbols, \( T \) is the symbol duration.
 
-A cyclic prefix is a portion of the OFDM symbol copied and prepended to the symbol to combat ISI. If the cyclic prefix duration is \( T_{\text{CP}} \), the signal with the cyclic prefix \( A_{\text{CP}}(t) \) is given by:
+A cyclic prefix is a portion of the \acrshort{ofdm} symbol copied and prepended to the symbol to combat \acrshort{isi}. If the cyclic prefix duration is \( T_{\text{CP}} \), the signal with the cyclic prefix \( A_{\text{CP}}(t) \) is given by:
 \begin{equation}
 A_{\text{CP}}(t) = 
 \begin{cases} 
@@ -327,14 +329,14 @@ A(t - k(T + T_{\text{CP}})), & \text{for } kT + T_{\text{CP}} \leq t < (k+1)T + 
     \center{
         \includegraphics[width=0.9\linewidth]{images/theory/ofdm_scheme.pdf}
     }
-    \caption{Addition of a guard period to an OFDM signal}
+    \caption{Addition of a guard period to an \acrshort{ofdm} signal}
     \label{fig:ofdm_signal}
 \end{figure}
 
-A guard interval is added between OFDM symbols to prevent inter-symbol interference. The guard interval duration is typically equal to the cyclic prefix duration \( T_{\text{CP}} \).
+A guard interval is added between \acrshort{ofdm} symbols to prevent inter-symbol interference. The guard interval duration is typically equal to the cyclic prefix duration \( T_{\text{CP}} \).
 The resulting signal \( A_{\text{final}}(t) \) which includes multiple symbols, the cyclic prefix, and the guard interval is thus represented by the formula for \( A_{\text{CP}}(t) \) over the entire transmission duration (Fig.~\ref{fig:ofdm_signal}). Within the scope of this work, the cycle prefix will not be incorporated into the \Gls{ofdm} signals. Instead, Eq.~(\ref{eq:ofdm_signal}) or Eq.~(\ref{eq:ofdm_symbol}) will be used as references.
 
 
 To decode a signal, the procedure is performed in the reverse order.
-The cyclic prefix appended to each OFDM symbol is removed. 
-Once the cyclic prefix is removed, the receiver performs a \Gls{fft} on each OFDM symbol to convert it from the time domain to the frequency domain. The \Gls{fft} operation segregates the aggregated OFDM symbol back into its constituent subcarriers. This transformation is the reverse of what was done at the transmitter during the \Gls{ifft} operation. Following the \Gls{fft}, each sub-carrier is individually demodulated to extract the data bits. The demodulation is performed based on the modulation scheme used at the transmitter, for example, QAM or PSK. The data from all sub-carriers is then aggregated to form the complete data stream.
+The cyclic prefix appended to each \acrshort{ofdm} symbol is removed. 
+Once the cyclic prefix is removed, the receiver performs a \Gls{fft} on each \acrshort{ofdm} symbol to convert it from the time domain to the frequency domain. The \Gls{fft} operation segregates the aggregated \acrshort{ofdm} symbol back into its constituent subcarriers. This transformation is the reverse of what was done at the transmitter during the \Gls{ifft} operation. Following the \Gls{fft}, each sub-carrier is individually demodulated to extract the data bits. The demodulation is performed based on the modulation scheme used at the transmitter, for example, \acrshort{qam} or \acrshort{psk}. The data from all sub-carriers is then aggregated to form the complete data stream.

@@ -1,8 +1,9 @@
 \subsection{Introduction}
 \label{sec:nn_nft_intro}
 
-In this section, we describe the main results obtained in the process of finding a suitable NN architecture for computing the continuous NF spectrum of a given signal. 
-First, we describe which type of signals we used in training and testing. Next, we discuss the Bayesian optimisation application for our finding the best-performing NN architecture and the respective training procedure. 
-Then, we analyse the output accuracy for the proposed NN architecture and compare it with that produced by a deterministic NFT numerical algorithm.
-In this paper, for the data generation and ``conventional'' computation we use the Fast NFT (FNFT) library\cite{FNFT2018}.
-At the end of the section, we show that the proposed NN architecture can predict not only the scattering coefficient $r(\xi)$, but also the NF coefficient $b(\xi)$, Eq.~(\ref{eq:nlse_ab}).
+In this section, we describe the main results obtained in the process of finding a suitable \acrshort{nn} architecture for computing the continuous NF spectrum of a given signal. 
+The results of this section have been published in~\cite{sedov2021neural}.
+First, we describe which type of signals we used in training and testing. Next, we discuss the Bayesian optimisation application for our finding the best-performing \acrshort{nn} architecture and the respective training procedure. 
+Then, we analyse the output accuracy for the proposed \acrshort{nn} architecture and compare it with that produced by a deterministic \acrshort{nft} numerical algorithm.
+In this study, for the data generation and ``conventional'' computation we use the \acrfull{fnft} library\cite{FNFT2018}.
+At the end of the section, we show that the proposed \acrshort{nn} architecture can predict not only the scattering coefficient $r(\xi)$, but also the NF coefficient $b(\xi)$, Eq.~(\ref{eq:nlse_ab}).

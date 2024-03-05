@@ -7,7 +7,7 @@
 \section{Defining the Parameters}
 \label{sec:hpcom_param}
 
-The following list details the elements of the WDM parameters dictionary created by the \texttt{create\_wdm\_parameters} function:
+The following list details the elements of the \acrshort{wdm} parameters dictionary created by the \texttt{create\_wdm\_parameters} function:
 
 \begin{description}[style=multiline, leftmargin=4cm, font=\normalfont]
     \item[\texttt{n\_channels}] Number of Wavelength Division Multiplexing channels.
@@ -139,17 +139,17 @@ def get_default_channel_parameters():
     \center{
         \includegraphics[width=1.0\linewidth]{images/hpcom/constellation_scale.pdf}
     }
-    \caption{A visualization displaying two sets of 16-QAM constellations on a complex plane. The left plot shows the original constellation, marked in blue, where each point represents a unique symbol. The right plot illustrates the scaled constellation, colored in red, which has been normalized to achieve a specified average power level of 0.1.}
+    \caption{A visualization displaying two sets of 16-\acrshort{qam} constellations on a complex plane. The left plot shows the original constellation, marked in blue, where each point represents a unique symbol. The right plot illustrates the scaled constellation, colored in red, which has been normalized to achieve a specified average power level of 0.1.}
     \label{fig:constellation_scale}
 \end{figure}
 
-Constellation points normalization is a technique used in digital signal processing, specifically in the context of modulation in communications, to ensure that the average power of the constellation points matches a desired level. This process is particularly important in systems like Wavelength Division Multiplexing (WDM), where each signal's power needs to be controlled to avoid interference and optimize the transmission.
+Constellation points normalization is a technique used in digital signal processing, specifically in the context of modulation in communications, to ensure that the average power of the constellation points matches a desired level. This process is particularly important in systems like \acrfull{wdm}, where each signal's power needs to be controlled to avoid interference and optimize the transmission.
 
-The average power of a constellation is computed as the mean of the squared magnitudes of all the constellation points. In the Python code provided, the constellation points are obtained and then scaled to match the desired average power, $P_{ave}$, which is an attribute of the WDM system.
+The average power of a constellation is computed as the mean of the squared magnitudes of all the constellation points. In the Python code provided, the constellation points are obtained and then scaled to match the desired average power, $P_{ave}$, which is an attribute of the \acrshort{wdm} system.
 
 The scaling factor is derived by dividing the square root of $P_{ave}$ by the square root of the actual average power of the unscaled constellation. This ensures that after scaling, the constellation will have the required average power. The functions \texttt{get\_scale\_coef\_constellation} and \texttt{get\_sq\_of\_average\_power} are used to compute the scaling factor based on the modulation type.
 
-Let $c_k$ represent the constellation points for a given modulation scheme, and $P_{\text{ave}}$ denote the desired average power for the Wavelength Division Multiplexing (WDM) system. The scaling process can be expressed as:
+Let $c_k$ represent the constellation points for a given modulation scheme, and $P_{\text{ave}}$ denote the desired average power for the \acrshort{wdm} system. The scaling process can be expressed as:
 
 \[
 c_{k,\text{scaled}} = c_k \cdot \frac{\sqrt{P_{\text{ave}}}}{\sigma_{c}}
@@ -176,7 +176,7 @@ is the scaling coefficient that is used to adjust the constellation from a stand
 %     print("Hello, World!")
 % \end{lstlisting}
 
-The script~\ref{lst:data_collection} serves as a detailed example of simulating and analyzing optical communication systems. It begins by importing necessary libraries such as TensorFlow for GPU memory management, Pandas for data handling, and HpCom for signal generation and channel modeling. By specifying a directory for data storage and a job name, it ensures organized handling of different simulation batches. The script outlines a variety of system, signal, and channel parameters, setting the stage for a range of simulation scenarios. Through nested loops, it iterates over various configurations of these parameters, each time setting up the signal and channel conditions, running the simulation, and collecting key metrics like bit error rate and Q-factor, along with the transmitted and received points. This data is compiled into a Pandas DataFrame, which is then saved to a Pickle file for each set of channel count and average power values, ensuring organized storage of simulation outcomes. The script also demonstrates efficient management of GPU memory allocation, which is crucial in multi-GPU setups. By conducting multiple runs with identical parameters, it accumulates a significant amount of data, addressing the limitations posed by restricted GPU memory. A 'done' message at the end signifies the successful completion of the script, exemplifying a structured approach to exploring and analyzing various configurations in optical communication systems. This script can serve as a robust framework for those looking to conduct thorough analyses of optical communication systems under varying conditions.
+The script~\ref{lst:data_collection} serves as a detailed example of simulating and analyzing optical communication systems. It begins by importing necessary libraries such as TensorFlow for \acrshort{gpu} memory management, Pandas for data handling, and HpCom for signal generation and channel modeling. By specifying a directory for data storage and a job name, it ensures organized handling of different simulation batches. The script outlines a variety of system, signal, and channel parameters, setting the stage for a range of simulation scenarios. Through nested loops, it iterates over various configurations of these parameters, each time setting up the signal and channel conditions, running the simulation, and collecting key metrics like bit error rate and Q-factor, along with the transmitted and received points. This data is compiled into a Pandas DataFrame, which is then saved to a Pickle file for each set of channel count and average power values, ensuring organized storage of simulation outcomes. The script also demonstrates efficient management of \acrshort{gpu} memory allocation, which is crucial in multi-\acrshort{gpu} setups. By conducting multiple runs with identical parameters, it accumulates a significant amount of data, addressing the limitations posed by restricted \acrshort{gpu} memory. A 'done' message at the end signifies the successful completion of the script, exemplifying a structured approach to exploring and analyzing various configurations in optical communication systems. This script can serve as a robust framework for those looking to conduct thorough analyses of optical communication systems under varying conditions.
 
 \lstinputlisting[
     language=Python,

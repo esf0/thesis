@@ -9,7 +9,7 @@
 \label{fig:periodical_signal}
 \end{figure}
 
-Let's consider a continuous signal, denoted as $A(z = L, t) \coloneqq A(t)$, which we intend to process using the NFT with vanishing boundary conditions. To clarify, the notation for $A$ in equation~(\ref{eq:nlse}) remains consistent throughout. However, in the case of the Manakov equation, $A$ represents the vector $[A_x, A_y]$, and all operations are independently applied to each component.
+Let's consider a continuous signal, denoted as $A(z = L, t) \coloneqq A(t)$, which we intend to process using the \acrshort{nft} with vanishing boundary conditions. To clarify, the notation for $A$ in equation~(\ref{eq:nlse}) remains consistent throughout. However, in the case of the \acrlong{me}, $A$ represents the vector $[A_x, A_y]$, and all operations are independently applied to each component.
 
 To achieve accurate processing, it is crucial to account for dispersion that occurs during signal propagation. Dispersion leads to neighboring symbols overlapping and distorting, potentially compromising the accuracy of subsequent signal processing steps.
 
@@ -36,7 +36,7 @@ Then, we take a signal $A_w(t)$ inside this $T_d + T_{proc} + T_d$ window define
     A_w(t, t_w) = A(t) W(t, t_w)
 \label{eq:window}
 \end{equation}
-and use NFT. 
+and use \acrshort{nft}. 
 It will restore the initial transmitted signal $A_w(z = 0, t, t_w)$, but side intervals $T_d$ will be corrupted due to the fact that we windowed the signal and lost information about the previous and following intervals. So we cut again and take only the $T_{proc}$ interval:
 \begin{equation}
 W_{proc}(t, t_w) = \begin{cases}
@@ -60,7 +60,7 @@ To address these challenges and enhance the stability of numerical calculations,
 
 \subsection{Compensated window}
 
-As previously discussed, the dispersion occurring during signal propagation leads to the overlapping and distortion of neighboring symbols. This can significantly compromise the accuracy of subsequent signal processing. However, we can mitigate this issue by leveraging our understanding of the propagation model, such as the Schr\"odinger equation for single polarization or the Manakov equation for dual polarization. We achieve this by effectively "compressing" the signal before processing through the compensation of chromatic dispersion. While this operation restores symbols to their initial positions, it does introduce some level of corruption due to nonlinear effects during propagation. Following dispersion compensation, we proceed to window the signal and subsequently decompensate the dispersion to obtain a processed signal ready for analysis using the NFT.
+As previously discussed, the dispersion occurring during signal propagation leads to the overlapping and distortion of neighboring symbols. This can significantly compromise the accuracy of subsequent signal processing. However, we can mitigate this issue by leveraging our understanding of the propagation model, such as the \acrlong{nlse} for single polarization or the \acrlong{me} for dual polarization. We achieve this by effectively "compressing" the signal before processing through the compensation of chromatic dispersion. While this operation restores symbols to their initial positions, it does introduce some level of corruption due to nonlinear effects during propagation. Following dispersion compensation, we proceed to window the signal and subsequently decompensate the dispersion to obtain a processed signal ready for analysis using the \acrshort{nft}.
 
 To initiate the process, we compensate for the dispersion across the entire signal using the equation:
 
@@ -95,26 +95,27 @@ A_{\tilde{w}}(z = 0, t, t_w) = W_{proc}(t, t_w) \cdot \mathrm{NFT}[A_{\tilde{w}}
 
 Similar to the conventional window mode, we can increment $t_w = t_w + T_{proc}$ to continuously process the full signal.
 
-For the practical implementation of the signal recovery process using the NFT, we need to introduce additional variables. To construct a time window for the recovery of the full signal, we employ the following expression:
+For the practical implementation of the signal recovery process using the \acrshort{nft}, we need to introduce additional variables. To construct a time window for the recovery of the full signal, we employ the following expression:
 
 \begin{equation}
 T_w = T_{proc} + 2 \cdot (R_d \cdot T_d + T_z) {;} \quad T_{proc} = N \cdot T_s {.}
+\label{eq:t_window}
 \end{equation}
 %
-Here, $T_{proc}$ represents the processing interval with $N$ symbols, and $T_s$ denotes the duration of one symbol interval. The term $R_d$ acts as a scale factor for the dispersive length, while the term $T_z$ corresponds to the number of additional empty symbol slots added to each side of the processing interval, enhancing the accuracy of the NFT.
+Here, $T_{proc}$ represents the processing interval with $N$ symbols, and $T_s$ denotes the duration of one symbol interval. The term $R_d$ acts as a scale factor for the dispersive length, while the term $T_z$ corresponds to the number of additional empty symbol slots added to each side of the processing interval, enhancing the accuracy of the \acrshort{nft}.
 
 \begin{figure}[!hbt]
     \centering
     \includegraphics[width=1\linewidth]{images/window/scheme.pdf}
-    \caption{Schematic representation of the processing procedure for a continuous WDM signal utilizing NFT. The initial step involves performing CDC for the entire signal. Subsequently, we extract a window of size $T_w$ (as defined by Eq.~(\ref{eq:t_window})) and compensate for the dispersion. The resulting signal undergoes NFT processing to recover the transmitted signal. This procedure is repeated iteratively for successive processing intervals.}
+    \caption{Schematic representation of the processing procedure for a continuous \acrshort{wdm} signal utilizing \acrshort{nft}. The initial step involves performing \acrshort{cdc} for the entire signal. Subsequently, we extract a window of size $T_w$ (as defined by Eq.~(\ref{eq:t_window})) and compensate for the dispersion. The resulting signal undergoes \acrshort{nft} processing to recover the transmitted signal. This procedure is repeated iteratively for successive processing intervals.}
     \label{fig:process_scheme_window}
 \end{figure}
 
-The final procedure for processing a continuous WDM signal with NFT can be summarized as follows (showed at Fig.~\ref{fig:process_scheme_window}):
+The final procedure for processing a continuous \acrshort{wdm} signal with \acrshort{nft} can be summarized as follows (showed at Fig.~\ref{fig:process_scheme_window}):
 \begin{itemize}
 \item Compensate the dispersion of the propagated signal without additional equalization.
 \item Cut the required window in the compensated signal.
 \item Decompensate the dispersion for the windowed signal.
-\item Process the signal in the window using NFT (as it is already localized).
+\item Process the signal in the window using \acrshort{nft} (as it is already localized).
 \item Collect the full signal.
 \end{itemize}

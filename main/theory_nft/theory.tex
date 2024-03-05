@@ -7,9 +7,9 @@ The \acrshort{nlse}, being a generic model describing the interplay between the 
 	\frac{\partial A }{\partial z} = - \frac{\alpha}{2} A - i \frac{\beta_2}{2} \frac{\partial^2 A}{\partial t^2} + i \gamma |A|^2 A {,}
 \label{eq:nlse_att}
 \end{equation}
-where $z$ represents the distance along the fiber, $t$ is time, $\beta_2$ is the group velocity dispersion (GVD) parameter, $\gamma$ is the nonlinear coefficient, and $A$ is the complex envelope of the optical field.
+where $z$ represents the distance along the fiber, $t$ is time, $\beta_2$ is the \acrfull{gvd} parameter, $\gamma$ is the nonlinear coefficient, and $A$ is the complex envelope of the optical field.
 
-The Manakov equation is a more complex model that is used to describe the behaviour of light propagation in a two-polarisation optical fiber. It considers the effects of polarization-mode dispersion and nonlinear interactions between the two polarizations. The Manakov equation for a two-polarization signal is as follows:
+The \acrlong{me} is a more complex model that is used to describe the behaviour of light propagation in a two-polarisation optical fiber. It considers the effects of polarization-mode dispersion and nonlinear interactions between the two polarizations. The \acrlong{me} for a two-polarization signal is as follows:
 \begin{gather} 
 \frac{\partial A_x}{\partial z} = -\frac{\alpha}{2} A_x - i\frac{\beta_2}{2}\frac{\partial^2 A_x}{\partial t^2} + i\gamma\frac{8}{9}\left(|A_x|^2 + |A_y|^2\right) A_x {,} \nonumber \\
 \frac{\partial A_y}{\partial z} = -\frac{\alpha}{2} A_y - i\frac{\beta_2}{2}\frac{\partial^2 A_y}{\partial t^2} + i\gamma\frac{8}{9}\left(|A_x|^2 + |A_y|^2\right) A_y {,}
@@ -26,7 +26,7 @@ In this study, we have simplified the channel model to exclude attenuation, a ne
     i\frac{\partial A }{\partial z} - \frac{\beta_2}{2} \frac{\partial^2 A}{\partial t^2} + \gamma |A|^2 A = 0,
 \label{eq:nlse}
 \end{equation}
-To effectively utilize \Gls{nft}, we introduce non-dimensional variables using characteristic scales like the pulse width or symbol interval \( T_0 \), dispersion length \( L_D = T_0^2/|\beta_2| \), and characteristic power \( P_0=1/(\gamma L_D) \). These lead to the following dimensionless equation, where \( \sigma \) represents either focusing (\( \sigma = 1 \)) or defocusing (\( \sigma = -1 \)) dispersion:
+To effectively utilize \Gls{nft}, we introduce non-dimensional variables using characteristic scales like the pulse width or symbol interval \( T_0 \), dispersion length \( L_D = T_0^2/|\beta_2| \), and characteristic power \( P_0=1/(\gamma L_D) \). These lead to the following dimensionless equation, where \( \sigma = \mathrm{sign}(-\beta_2 \gamma)\) represents either focusing (\( \sigma = 1 \)) or defocusing (\( \sigma = -1 \)) dispersion:
 \begin{equation}
     i \frac{\partial q }{\partial \zeta} + \frac{\sigma}{2} \frac{\partial^2 q}{\partial \tau^2} +  |q|^2 q = 0,
 \label{eq:nlse_norm}
@@ -60,7 +60,7 @@ i \frac{\partial q_x}{\partial \zeta} + \frac{\sigma}{2}\frac{\partial^2 q_x}{\p
 i \frac{\partial q_y}{\partial \zeta} + \frac{\sigma}{2}\frac{\partial^2 q_y}{\partial \tau^2} + \left(|q_x|^2 + |q_y|^2\right) q_y = 0.
 \label{eq:manakov_norm}
 \end{gather}
-For clarity, throughout this paper, we will refer to the scaled fields \( q \) (from \( A \)) or \( q_{x,y} \) (from \( A_{x,y} \)) simply as 'the signal'.
+For clarity, throughout this thesis, we will refer to the scaled fields \( q \) (from \( A \)) or \( q_{x,y} \) (from \( A_{x,y} \)) simply as 'the signal'.
 
 
 
@@ -105,24 +105,38 @@ respectively.
 
 \subsection{Introduction}
 
-Quite often, the evolution of nonlinear systems is well approximated by the nonlinear partial differential equations (PDE). Evidently, there is no universal theory for the solution of nonlinear PDEs, but there exists a distinguished class of nonlinear equations that can be solved with a mathematical rigour: the so-called integrable systems. The history of integrable PDEs started in the 1960s when Gardner et al. \cite{ggk67} discovered a method for finding the infinite families of exact solutions for the  Korteweg-de Vries equation. Their method termed the inverse scattering transform, can be deemed as the generalisation of the conventional Fourier transform (FT) to the nonlinear systems. Thus, the name nonlinear Fourier transform (NFT) for it is often used nowadays, especially in the signal processing literature \cite{yk14-1,tplwfkd17}. Shortly after the integration of the Korteweg-de Vries equation, Zakharov and Shabat developed the inverse scattering machinery (i.e. the NFT method) for yet another celebrated PDE: the nonlinear Schr\"odinger equation (NLSE) \cite{zs72}, which will be the focus of our current study.  
+Quite often, the evolution of nonlinear systems is well approximated by the nonlinear \acrfull{pde}. Evidently, there is no universal theory for the solution of nonlinear PDEs, but there exists a distinguished class of nonlinear equations that can be solved with a mathematical rigour: the so-called integrable systems. The history of integrable PDEs started in the 1960s when Gardner et al.~\cite{gardner1967} discovered a method for finding the infinite families of exact solutions for the  Korteweg-de Vries equation. Their method termed the inverse scattering transform, can be deemed as the generalisation of the conventional \acrfull{ft} to the nonlinear systems. Thus, the name \acrfull{nft} for it is often used nowadays, especially in the signal processing literature~\cite{yk14-1,turitsyn2017nonlinear}. Shortly after the integration of the Korteweg-de Vries equation, Zakharov and Shabat developed the inverse scattering machinery (i.e. the \acrshort{nft} method) for yet another celebrated PDE: the \acrfull{nlse}~\cite{zakharov1972exact}, which will be the focus of our current study.  
 
-In a nutshell, for an integrable PDE there exists the canonical transform of dependent variables, converting the original nonlinear system into the so-called action-angle variables; the evolution of the latter is governed by a set of uncoupled trivial (linear) differential equations. Mathematically, this can be treated as the effective linearisation of a nonlinear integrable PDE \cite{akn74,nmp84}. For our work, it is important that we know the explicit form of the NFT operations attributed to the NLSE.
+In a nutshell, for an integrable PDE there exists the canonical transform of dependent variables, converting the original nonlinear system into the so-called action-angle variables; the evolution of the latter is governed by a set of uncoupled trivial (linear) differential equations. Mathematically, this can be treated as the effective linearisation of a nonlinear integrable PDE \cite{akn74,nmp84}. For our work, it is important that we know the explicit form of the \acrshort{nft} operations attributed to the \acrshort{nlse}.
 
-Withing modern optical communications, the NFT is used not as a tool for the NLSE solution, but as a signal processing method \cite{tplwfkd17,yk14-1}. This concept originated from the work of Hasegawa and Nyu \cite{hn93}, who proposed to depart from considering the time domain solitonic shapes \cite{mg06}, but rather use the nonlinear spectrum (the so-called eigenvalues) for the data modulation and transmission. Over the last decade, the NFT-based optical transmission techniques have been resurrected and greatly extended~\cite{tplwfkd17,yal19}. The most efficient NFT-based optical transmission method is the so-called nonlinear frequency division multiplexing (NFDM) \cite{yk14-1}, within which we directly modulate the parameters of the nonlinear modes that emerge from the nonlinear Fourier (NF) signal decomposition. When the optical field propagates down the fibre link, the evolution of the nonlinear modes inside the NF domain stays almost linear, in contrast to the truly nonlinear evolution of signal in the space-time domain. Due to this property, we can theoretically get rid of the infamous nonlinear cross-talk degrading the transmission performance at high signal powers\cite{ekw10}. 
+Withing modern optical communications, the \acrshort{nft} is used not as a tool for the \acrshort{nlse} solution, but as a signal processing method \cite{turitsyn2017nonlinear,yk14-1}. This concept originated from the work of Hasegawa and Nyu \cite{hn93}, who proposed to depart from considering the time domain solitonic shapes \cite{mg06}, but rather use the nonlinear spectrum (the so-called eigenvalues) for the data modulation and transmission. Over the last decade, the \acrshort{nft}-based optical transmission techniques have been resurrected and greatly extended~\cite{turitsyn2017nonlinear,yal19}. The most efficient \acrshort{nft}-based optical transmission method is the so-called \acrfull{pnft} \cite{yk14-1}, within which we directly modulate the parameters of the nonlinear modes that emerge from the \acrfull{nf} signal decomposition. When the optical field propagates down the fibre link, the evolution of the nonlinear modes inside the \acrshort{nf} domain stays almost linear, in contrast to the truly nonlinear evolution of signal in the space-time domain. Due to this property, we can theoretically get rid of the infamous nonlinear cross-talk degrading the transmission performance at high signal powers\cite{ekw10}. 
 
-Generally, when considering the NF decomposition of an arbitrary rapidly decaying wave-form, we can have two distinct coexisting parts of the NF spectrum: the continuous part, describing quasi-linear dispersive waves, and the discrete part, corresponding to solitonic modes \cite{nmp84,akn74,tplwfkd17,yk14-1}. The continuous part of NF spectrum is represented by the complex-valued function $r(\xi) \in \mathbb{C}$ of a real argument $\xi \in \mathbb{R}$, where $\xi$ is called the spectral parameter; $r(\xi)$ is called the reflection coefficient, and $\xi$ emerges as the nonlinear analogue of a conventional Fourier frequency. This NF spectrum part converges to the conventional FT of our signal in the low-power limit \cite{pdt13}. The discrete part consists of the complex eigenvalues $\xi_n \in \mathbb{C}^{+}$, located in the upper complex half-plane, and the associated norming constants $r_n$ (spectral amplitudes) \cite{a16}. The graphical summary of the general NF spectrum structure is given in Fig.~\ref{fig:spectrum_representation}. However, we point out that it is exactly the utilisation of the continuous NF spectrum part \cite{pdbgt14,lpt14,lpt15,lpr15,lpphet16,lab17,kplt17_2,yy19} that resulted in the breakthrough in the NFDM technology: this idea, mentioned already in early NFT transmission-related works \cite{yk14-1,pdt13}, is in stark contrast with the progenitor soliton-based transmission methods~\cite{mg06}. We mention that the continuous NF spectrum modulation using the special technique coined b-modulation \cite{w17,gzl18,svp20,cw20} has provided the highest NFDM data rates so far \cite{yal19,yla19}.  Finally, we note that for the NFDM based on the discrete NF spectrum \cite{hyk16,bai16,wxz20}, the achieved data rates have been noticeably lower than those for the modulation of continuous NF spectrum, see the comparison in \cite[Fig. 1]{yal19}.
+Generally, when considering the \acrshort{nf} decomposition of an arbitrary rapidly decaying wave-form, we can have two distinct coexisting parts of the \acrshort{nf} spectrum: the continuous part, describing quasi-linear dispersive waves, and the discrete part, corresponding to solitonic modes \cite{nmp84,akn74,turitsyn2017nonlinear,yk14-1}. The continuous part of \acrshort{nf} spectrum is represented by the complex-valued function $r(\xi) \in \mathbb{C}$ of a real argument $\xi \in \mathbb{R}$, where $\xi$ is called the spectral parameter; $r(\xi)$ is called the reflection coefficient, and $\xi$ emerges as the nonlinear analogue of a conventional Fourier frequency. This \acrshort{nf} spectrum part converges to the conventional \acrshort{ft} of our signal in the low-power limit \cite{pdt13}. The discrete part consists of the complex eigenvalues $\xi_n \in \mathbb{C}^{+}$, located in the upper complex half-plane, and the associated norming constants $r_n$ (spectral amplitudes) \cite{a16}. The graphical summary of the general \acrshort{nf} spectrum structure is given in Fig.~\ref{fig:spectrum_representation}. However, we point out that it is exactly the utilisation of the continuous \acrshort{nf} spectrum part \cite{pdbgt14,lpt14,lpt15,lpr15,lpphet16,lab17,kplt17_2,yy19} that resulted in the breakthrough in the \acrshort{pnft} technology: this idea, mentioned already in early \acrshort{nft} transmission-related works \cite{yk14-1,pdt13}, is in stark contrast with the progenitor soliton-based transmission methods~\cite{mg06}. We mention that the continuous \acrshort{nf} spectrum modulation using the special technique coined b-modulation \cite{w17,gzl18,svp20,cw20} has provided the highest \acrshort{pnft} data rates so far \cite{yal19,yla19}.  Finally, we note that for the \acrshort{pnft} based on the discrete \acrshort{nf} spectrum \cite{hyk16,bai16,wxz20}, the achieved data rates have been noticeably lower than those for the modulation of continuous \acrshort{nf} spectrum, see the comparison in \cite[Fig. 1]{yal19}.
 \begin{figure}[tbh]
     \centering
     \includegraphics[width=0.55\linewidth]{images/nn_nft/nft_spectrum_representation_6.pdf}
-    \caption{The schematic showing the different coexisting parts of a general NF spectrum: the discrete part, represented by the eigenvalues $\xi_n$ and respective norming constants $r_n$, and the continuous part, shown as the function $|r(\xi)|$ on the real $\xi$-axis. }
+    \caption{The schematic showing the different coexisting parts of a general \acrshort{nf} spectrum: the discrete part, represented by the eigenvalues $\xi_n$ and respective norming constants $r_n$, and the continuous part, shown as the function $|r(\xi)|$ on the real $\xi$-axis. }
     \label{fig:spectrum_representation}
 \end{figure}
 
-The NFDM transmission method relies on the (approximate) integrability of our transmission channel, i.e. we inherently assume that Eq.~(\ref{eq:nlse_norm}) is a very accurate model describing the signal evolution down the fibre. However, aside from second-order dispersion and Kerr nonlinearity present in (\ref{eq:nlse_norm}), in realistic fibre-optic systems, there are numerous other effects affecting signal's propagation. Optical noise inevitably arising during the amplification process \cite{a12} is one of the key challenges in optical communications. The noise results in random NF spectrum disturbances \cite{dpt16,pvd20}, imposing limits on the NFDM transmission quality.  Another widespread deviation from idealised model (\ref{eq:nlse_norm}) is the non-zero nonuniform gain-loss profile occurring in realistic systems for both lumped \cite{lpt15,kplt17_2} and distributed \cite{lpr15} amplification schemes. We also mention the effects of polarisation mode dispersion \cite{ylb17,ts19}, higher-order chromatic dispersion \cite{ylb17}, and component-induced impairments, to itemise just several important sources. All these effects bring about the deviations of the true optical channel from integrable NLSE (\ref{eq:nlse_norm}) such that the NF spectrum of the signal at the end of our transmission system can be significantly distorted, which results in the appearance of errors in the transmitted data \cite{lpphet16,lab17,ylb17}.  Given that,  the machine learning and artificial neural networks (NN) based signal processing methods have recently attracted much attention, as they can effectively render adaptive distortions-resilient signal processing tools, and, thus, using the NNs we can mitigate the impact of detrimental factors mentioned above \cite{mrn18,kfl19}.  
+The \acrshort{pnft} transmission method relies on the (approximate) integrability of our transmission channel, i.e. we inherently assume that Eq.~(\ref{eq:nlse_norm}) is a very accurate model describing the signal evolution down the fibre. However, aside from second-order dispersion and Kerr nonlinearity present in (\ref{eq:nlse_norm}), in realistic fibre-optic systems, there are numerous other effects affecting signal's propagation. Optical noise inevitably arising during the amplification process \cite{a12} is one of the key challenges in optical communications. The noise results in random \acrshort{nf} spectrum disturbances \cite{dpt16,pvd20}, imposing limits on the \acrshort{pnft} transmission quality.  Another widespread deviation from idealised model (\ref{eq:nlse_norm}) is the non-zero nonuniform gain-loss profile occurring in realistic systems for both lumped \cite{lpt15,kplt17_2} and distributed \cite{lpr15} amplification schemes. We also mention the effects of polarisation mode dispersion \cite{ylb17,ts19}, higher-order chromatic dispersion \cite{ylb17}, and component-induced impairments, to itemise just several important sources. All these effects bring about the deviations of the true optical channel from integrable \acrshort{nlse} (\ref{eq:nlse_norm}) such that the \acrshort{nf} spectrum of the signal at the end of our transmission system can be significantly distorted, which results in the appearance of errors in the transmitted data \cite{lpphet16,lab17,ylb17}.  Given that,  the machine learning and artificial \acrfull{nn} based signal processing methods have recently attracted much attention, as they can effectively render adaptive distortions-resilient signal processing tools, and, thus, using the \acrshort{nn}s we can mitigate the impact of detrimental factors mentioned above \cite{mrn18,kfl19}.  
 
 
-Finally, we note that, recently, the interest in using the NFT as a signal-processing tool has risen in fields that are not directly relevant to optical transmission. In particular, the NFT was applied in the so-called integrable turbulence to monitor the appearance of coherent structures, such as breathers, solitons, and rogue waves \cite{rsc18,sda16}, to the optical microresonators regime analysis \cite{tcf20}, to the optical frequency combs characterisation \cite{wsh20}, and to the analysis of laser regimes and the emergence of dissipative coherent nonlinear structures \cite{rnb18,skp19,csf19}. The analysis of NFT modes' evolution for such systems often appears to be more informative and convenient than dealing with the conventional Fourier modes. The NFT is also an important tool for the design of fibre Bragg gratings \cite{FBG01,FBG02}. Thus, we believe that the technique presented in this work can have a much wider range of applications than simply being a processing tool in optical communications. To end up, solving nonlinear differential equations itself by using NNs is a fast-growing area with a range of applications in science and engineering \cite{rbp17,lkb18,lka20}. We hope that our work will also advance knowledge in this emerging field.
+Finally, we note that, recently, the interest in using the \acrshort{nft} as a signal-processing tool has risen in fields that are not directly relevant to optical transmission. In particular, the \acrshort{nft} was applied in the so-called integrable turbulence to monitor the appearance of coherent structures, such as breathers, solitons, and rogue waves \cite{rsc18,sda16}, to the optical microresonators regime analysis \cite{tcf20}, to the optical frequency combs characterisation \cite{wsh20}, and to the analysis of laser regimes and the emergence of dissipative coherent nonlinear structures \cite{rnb18,skp19,Chekhovskoy2019_PRL}. The analysis of \acrshort{nft} modes' evolution for such systems often appears to be more informative and convenient than dealing with the conventional Fourier modes. The \acrshort{nft} is also an important tool for the design of fibre Bragg gratings \cite{FBG01,FBG02}. Thus, we believe that the technique presented in this work can have a much wider range of applications than simply being a processing tool in optical communications. To end up, solving nonlinear differential equations itself by using \acrshort{nn}s is a fast-growing area with a range of applications in science and engineering \cite{rbp17,lkb18,lka20}. We hope that our work will also advance knowledge in this emerging field.
+
+\subsubsection{Periodical \acrlong{nft}}
+
+While this thesis primarily focuses on \acrlong{nft} techniques with vanishing boundary conditions and the methods developed for this particular case, it is imperative to acknowledge the existence of another significant branch of research in the field of \acrshort{nft}, known as \acrfull{pnft}. The \acrshort{pnft} approach marks a significant advancement in the study and application of \acrshort{nft} techniques, specifically designed for periodic or quasi-periodic boundary conditions. This approach not only extends the utility of \acrshort{nft} methods to a broader range of signal types but also addresses several limitations associated with conventional \acrshort{nft} methods by offering enhanced control over signal's duration and bandwidth, reducing the processing window at the receiver, and mitigating noise impact \cite{kamalian2016periodic}.
+
+\acrshort{pnft}-based transmission systems have been thoroughly investigated using the algebro-geometric approach, which, despite its computational intensity due to the reliance on the Riemann theta function, has paved the way for innovative solutions in optical communications \cite{goossens2020data, goossens2019experimental}. To circumvent the computational challenges, the \acrfull{rhp} approach has been proposed as a more practical alternative. This method benefits from linear computational complexity proportional to the number of signal samples, facilitating efficient parallelization and computation \cite{kamalian2018signal}.
+
+The finite-gap theory emerges as a complementary technique within the \acrshort{pnft} framework, offering a rich mathematical foundation for the analysis of continuous (non-decaying) signals. This theory, rooted in the \acrfull{ist} method and the \acrlong{glm} integral equations, provides a profound understanding of the spectral properties of integrable systems \cite{novikov1984theory}.  An alternative perspective on the inverse problem is offered through the formulation of a factorization problem of the \acrfull{rh} type, further simplifying the integration of spatial and temporal variables into the analysis \cite{trogdon2015riemann}.
+
+The theory of finite-genus solutions to the \acrshort{nlse} has seen extensive application in the analysis of water (ocean) waves \cite{osborne2010nonlinear,osborne2020nonlinear}. The finite-gap integration methodology has introduced groundbreaking implications for problems on a finite spatial interval with periodic boundary conditions, enabling the generation of exact solutions known as finite-gap solutions. These solutions are explicitly given in terms of associated theta functions, derived from solving a Jacobi inversion problem on a finite-genus Riemann surface, albeit their computational accessibility remains a challenge \cite{matveev200830, belokolos1994algebro, kotlyarov2017planar}.
+
+In optical communications, the application of finite-gap theory and \acrshort{pnft} has been instrumental in the development of innovative methods based on non-decaying solutions to the \acrshort{nlse}. These methods have demonstrated significant potential in enhancing the efficiency of optical telecommunication systems, leveraging the robustness of finite-gap solutions to address challenges inherent in soliton-based communications \cite{goossens2020data,kamalian2016periodic,kamalian2018signal,kamalian2020full,bogdanov2023phase}. The numerical solution of RH problems plays a crucial role in the modulation and digital signal processing (DSP) methods proposed for \acrshort{pnft}-based transmission, where the inverse problem is solved by constructing a signal in the physical domain from spectral parameters \cite{kamalian2018signal, kamalian2020full}.
+
+Thus, while our thesis concentrates on \acrshort{nft} methods for vanishing boundary conditions, the exploration of \acrshort{pnft} and finite-gap theory underscores a broader perspective in the field. These approaches not only enrich our understanding of \acrshort{nft} and its applications but also open new avenues for research and development in optical telecommunication systems, promising more robust, efficient, and adaptable communication technologies for the future.
 
 \subsection{Theory}
 
@@ -136,11 +150,11 @@ Finally, we note that, recently, the interest in using the NFT as a signal-proce
 \end{figure}
 
 
-The \acrlong{nlse}~(\ref{eq:nlse_norm}) (so does \acrlong{me}~(\ref{eq:manakov_norm})) belongs to the class of the so-called integrable nonlinear partial differential equations that can be integrated by the \Gls{ist} method, also known as the nonlinear Fourier transform (NFT)~\cite{ZakharovShabat1972, Ablowitz1981}.
-The \gls{nft} allows one to find the evolution (with $z$) of the signal $q(t,z)$ described by the \acrshort{nlse} channel by solving two linear problems instead of solving the nonlinear partial differential equation. A complex signal evolution governed by \acrshort{nlse} is replaced by 3 steps (see Fig.~\ref{fig:IST}):
+The \acrlong{nlse}~(\ref{eq:nlse_norm}) (so does \acrlong{me}~(\ref{eq:manakov_norm})) belongs to the class of the so-called integrable nonlinear \acrfull{pde}s that can be integrated by the \Gls{ist} method, also known as the \acrfull{nft}~\cite{zakharov1972exact, Ablowitz1981}.
+The \gls{nft} allows one to find the evolution (with $z$) of the signal $q(t,z)$ described by the \acrshort{nlse} channel by solving two linear problems instead of solving the nonlinear \acrfull{pde}. A complex signal evolution governed by \acrshort{nlse} is replaced by 3 steps (see Fig.~\ref{fig:IST}):
 \begin{enumerate}
-    \item direct (linear) transform from $q(t,z=0)$ to the so-called scattering data $\Sigma(0)$ (nonlinear spectrum of the initial signal)
-    \item trivial evolution of the nonlinear spectrum with z, and
+    \item direct (linear) transform from $q(t,z=0)$ to the so-called scattering data $\Sigma(0)$ (nonlinear spectrum and spectral data of the initial signal)
+    \item trivial evolution of the scattering data with $z$, and
     \item inverse (linear) transform to restore signal $q(t,z)$ at any desired propagation distance $z$.
 \end{enumerate}
 % We do describe here all mathematical details as they are comprehensively presented in \cite{Optica}. 
@@ -175,7 +189,7 @@ where \(\Psi(t)\) is a complex, two-component function that depends on the real 
     -q^* \partial_t - \frac{1}{2} q_t & - \sigma \partial_t^2 - \frac{1}{2} |q|^2  \end{pmatrix}.
     \label{eq:nlse_l_and_m}
 \end{align}
-The first equation in Eq.~(\ref{eq:lax_pair_nlse}) is the eigenvalue problem for the operator \(L\). When \(\sigma = -1\), the operator \(L\) is Hermitian, meaning it equals its own complex conjugate transpose (\(L = L^\dagger = (L^*)^T\)), so the spectral parameter \(\xi = \zeta + i\eta\) is a real number \(\xi = \zeta\in \mathbb{R}\). If \(\sigma = 1\), there is no such constraint, and we find both continuous and discrete parts to the spectrum. The continuous part is on the real axe, while the discrete part is found where the imaginary part of \(\xi\) is greater than zero (\(\text{Im}(\xi) > 0\)).
+The first equation in Eq.~(\ref{eq:lax_pair_nlse}) is the eigenvalue problem for the operator \(L\). When \(\sigma = -1\), the operator \(L\) is Hermitian, meaning it equals its own complex conjugate transpose (\(L = L^\dagger = (L^*)^T\)), so the spectral parameter \(\xi = \zeta + i\eta\) is a real number \(\xi = \zeta\in \mathbb{R}\). If \(\sigma = 1\), there is no such constraint, and we find both continuous and discrete parts to the spectrum. The continuous part is on the real axis, while the discrete part is found where the imaginary part of \(\xi\) is greater than zero (\(\text{Im}(\xi) > 0\)).
 
 The first equation in Eq.~(\ref{eq:lax_pair_nlse}) can also be expressed as an evolutionary system:
 \begin{equation}
@@ -335,7 +349,7 @@ The trace formula is given as~\cite{Ablowitz1981}:
     C_n = - \frac{1}{\pi} \int_{-\infty}^{\infty} (2i \xi)^n \ln |a(\xi)|^2 d \xi + \sum_{k=0}^{K-1} \frac{1}{n+1} \left[ (2i \xi_k^*)^{n+1} - (2i \xi_k)^{n+1} \right],
     \label{eq:nlse_cn}
 \end{equation}
-This formula links the NLSE integrals \(C_n\) with the scattering coefficient \(a(\xi)\) and the set of discrete spectral values \(\xi_k\). The integrals \(C_n\) are represented as:
+This formula links the \acrshort{nlse} integrals \(C_n\) with the scattering coefficient \(a(\xi)\) and the set of discrete spectral values \(\xi_k\). The integrals \(C_n\) are represented as:
 \[
     C_0 = \int_{-\infty}^{\infty} |q|^2 dt, \, C_1 = \int_{-\infty}^{\infty} qq_t^* dt, \, C_2 = \int_{-\infty}^{\infty} (qq_{tt}^* + |q|^4) dt,
 \]
@@ -396,17 +410,17 @@ The way scattering data changes with the distance \( z \) is described by:
 
 The scattering data combines into the core \( \Sigma (z) \), which is a sum of the discrete and continuous parts of the nonlinear spectrum:
 \begin{equation}
-    \Sigma_{dis}(z) = \sum_{k = 0}^{K - 1} r_k(z) e^{-i \zeta_n z},
+    \Sigma_{dis}(z, t) = \sum_{k = 0}^{K - 1} r_k(z) e^{-i \zeta_n t},
     \label{eq:kernel_sol}
 \end{equation}
 for the discrete part, and
 \begin{equation}
-    \Sigma_{con}(z) = \frac{1}{2\pi} \int_{-\infty}^{+\infty} d\xi r(\xi, z) e^{-i \xi z},
+    \Sigma_{con}(z) = \frac{1}{2\pi} \int_{-\infty}^{+\infty} d\xi r(\xi, z) e^{-i \xi t},
     \label{eq:kernel_rad}
 \end{equation}
 for the continuous part. Here \( N \) represents the total number of discrete eigenvalues in the signal.
 
-The last part of working with the \gls{nft} involves reconstructing the signal from the scattering data. To get the signal \( q(t, z) \) back at a certain distance \( z \), we use the core \( \Sigma (z) \) in two integral equations, known as the \acrfull{glm} equations:
+The last part of working with the \gls{nft} involves reconstructing the signal from the scattering data. To get the signal \( q(t, z) \) back at a certain distance \( z \), we use the core \( \Sigma (z, t) \) in two integral equations, known as the \acrfull{glm} equations:
 \begin{equation}
     \Theta_1^{*}(t,s)+\int_{-s}^{t} \Sigma(s+\tau) \Theta_2(t,\tau) d\tau = 0,
     \label{eq:glm_1}
@@ -415,12 +429,13 @@ The last part of working with the \gls{nft} involves reconstructing the signal f
     -\Theta_2^{*}(t,s)+\int_{-s}^{t} \Sigma(s+\tau) \Theta_1(t,\tau) d\tau + \Sigma(t+s) = 0,
     \label{eq:glm_2}
 \end{equation}
-where \( -t \le s < t \) and \( 0 \le t \le T \), with $ \Sigma (t) \equiv \Sigma (z = 0, t) $. We solve for two functions, \( \Theta_1 \) and \( \Theta_2 \), using these equations. Once we find these functions, we can recover the signal using the straightforward formula:
+where \( -t \le s < t \) and \( 0 \le t \le T \), with $ \Sigma (t) \equiv \Sigma (z, t) $. We solve for two functions, \( \Theta_1 \) and \( \Theta_2 \), using these equations. Once we find these functions, we can recover the signal using the straightforward formula:
 \begin{equation}
-    q(z,t) = -2 \Theta_2^{*}(t,t).
+    q(t)|_{z} = -2 \Theta_2^{*}(t,t) {,}
     \label{eq:glm_q}
 \end{equation}
-
+at the desired spatial point $z$.\footnote{We suppress the dependence on $z$ for simplicity: $\Sigma(t) \equiv \Sigma(z, t)$, but actually, $\Theta_2^{*}(t, s)$ also depends on $z$ --- denoted as $\Theta_2^{*}(z, t, s)$.
+}.
 
 
 % The dependence of the scattering data on $z$ can be represented in the form:
@@ -466,7 +481,7 @@ i \frac{\partial q_y}{\partial \zeta} + \frac{\sigma}{2}\frac{\partial^2 q_y}{\p
 \label{eq:manakov_norm_again}
 \end{gather}
 
-The Lax operators of the Manakov equation are given by 
+The Lax operators of the \acrlong{me} are given by 
 \begin{align}
     L_{\text{M}} &= i\begin{pmatrix} \partial_t & -q_1 & -q_2 \\
     -\sigma q_1^* & -\partial_t & 0 \\
@@ -480,7 +495,7 @@ Eigenvalues are found by solving the eigenproblem
     L\Psi = \xi \Psi {,}
 \end{equation}
 
-Zakharov-Shabat system can be written for the Manakov's equations in the following way (Manakov-Zakharov-Shabat (MZS) problem):
+Zakharov-Shabat system can be written for the Manakov's equations in the following way (\acrfull{mzs} problem):
 \begin{equation}
 \left\{
 \begin{aligned}
@@ -492,7 +507,7 @@ Zakharov-Shabat system can be written for the Manakov's equations in the followi
 \label{eq:zs_manakov}
 \end{equation}
 
-By the analoge for NLSE ZS problem, the basis vectors for the eigenspace (the space of all eigenfunctions of $\mathbf{L}$) for \acrshort{me} are given by
+By the analoge for \acrshort{nlse} \acrshort{zs} problem, the basis vectors for the eigenspace (the space of all eigenfunctions of $\mathbf{L}$) for \acrshort{me} are given by
 $$
 \Phi(t) \rightarrow\left[\begin{array}{ll}
 0 & 0 \\
@@ -527,7 +542,7 @@ We can select either the set of eigenfunctions at the boundary \( t \rightarrow 
 & \bar{\Psi}=\Phi \bar{a}(\xi)+\bar{\Phi} \bar{b}(\xi),
 \end{aligned}
 \end{equation}
-with dimensions $a \in \mathbb{C}, \bar{a} \in \mathbb{C}^{2 \times 2}, b \in \mathbb{C}^{2 \times 1}$ and $\bar{b} \in \mathbb{C}^{1 \times 2}$. Just one pair of these coefficients, either \(a\) and \(b\) or \(\bar{a}\) and \(\bar{b}\), is sufficient to fully describe the signal. These coefficients, \(a(\xi)\) and \(b(\xi)\), known as the Nonlinear Fourier coefficients, depend on the spectral parameter \(\xi\) and the initial position \(z_0\), but they are independent of the time variable \(t\). This allows us to select the basis vectors at any time point we choose for calculating the Nonlinear Fourier coefficients. Let's select the time as it goes to infinity, \(t \rightarrow \infty\). We already know the values for \(\Phi\) and \(\bar{\Phi}\) at this time from the boundary conditions:
+with dimensions $a \in \mathbb{C}, \bar{a} \in \mathbb{C}^{2 \times 2}, b \in \mathbb{C}^{2 \times 1}$ and $\bar{b} \in \mathbb{C}^{1 \times 2}$. Just one pair of these coefficients, either \(a\) and \(b\) or \(\bar{a}\) and \(\bar{b}\), is sufficient to fully describe the signal. These coefficients, \(a(\xi)\) and \(b(\xi)\), known as the \acrlong{nf} coefficients, depend on the spectral parameter \(\xi\) and the initial position \(z_0\), but they are independent of the time variable \(t\). This allows us to select the basis vectors at any time point we choose for calculating the \acrlong{nf} coefficients. Let's select the time as it goes to infinity, \(t \rightarrow \infty\). We already know the values for \(\Phi\) and \(\bar{\Phi}\) at this time from the boundary conditions:
 $$
 \begin{aligned}
 \lim _{t \rightarrow \infty} \Psi & =\lim _{t \rightarrow \infty}\left(\bar{\Phi} a(\xi)+\Phi b(\xi)\right) \\
@@ -550,7 +565,7 @@ b_{2}(\xi) \exp (j \xi t)
 \end{array}\right]
 \end{aligned}
 $$
-We can determine \(\Psi\) as time approaches infinity (\(t \rightarrow \infty\)) using the boundary condition set as time approaches negative infinity (\(t \rightarrow -\infty\)). Consequently, all eigenvectors mentioned in~\eqref{CommonSolution} are known at the same point in time, specifically when \(t\) approaches infinity. To calculate the Nonlinear Fourier Transform (NFT) coefficients, we multiply both sides of the equation by either \(\exp (j \xi t)\) or \(\exp (-j \xi t)\), depending on whether we are finding the \(a\) coefficients or \(b_{1,2}\) coefficients, respectively. Then, we pick out the appropriate component from the resulting expressions:
+We can determine \(\Psi\) as time approaches infinity (\(t \rightarrow \infty\)) using the boundary condition set as time approaches negative infinity (\(t \rightarrow -\infty\)). Consequently, all eigenvectors mentioned in~\eqref{CommonSolution} are known at the same point in time, specifically when \(t\) approaches infinity. To calculate the \acrlong{nft} coefficients, we multiply both sides of the equation by either \(\exp (j \xi t)\) or \(\exp (-j \xi t)\), depending on whether we are finding the \(a\) coefficients or \(b_{1,2}\) coefficients, respectively. Then, we pick out the appropriate component from the resulting expressions:
 $$
 \begin{aligned}
 \lim _{t \rightarrow \infty} \Psi \exp (j \xi t) & =\left[\begin{array}{c}
@@ -580,7 +595,7 @@ b_2(\xi)
 $$
 
 
-The NFT coefficients are thus given by
+The \acrshort{nft} coefficients are thus given by
 $$
 a(\xi)=\lim _{t \rightarrow \infty} \psi_1 \exp (j \xi t), \quad b_i(\xi)=\lim _{t \rightarrow \infty} \psi_{i+1} \exp (-j \xi t)
 $$
@@ -599,7 +614,7 @@ And we can define the same spectral data:
     \end{equation}
 \end{itemize}
 
-Finding the NFT coefficients comes down to solving the MZS system~\eqref{eq:zs_manakov}. This is a scattering problem: in solving~\eqref{eq:zs_manakov}, we analyze how the eigenfunctions are scattered from $t \rightarrow-\infty$ to $t \rightarrow \infty$. The NFT coefficients are therefore sometimes called the scattering coefficients. They capture the scattering data of $\mathbf{q}\left(z_0, t\right)$ and can also be collected in the socalled scattering matrix $\mathbf{S}(z, \xi)$. We can express~\eqref{CommonSolution} in terms of the scattering matrix as
+Finding the \acrshort{nft} coefficients comes down to solving the \acrshort{mzs} system~\eqref{eq:zs_manakov}. This is a scattering problem: in solving~\eqref{eq:zs_manakov}, we analyze how the eigenfunctions are scattered from $t \rightarrow-\infty$ to $t \rightarrow \infty$. The \acrshort{nft} coefficients are therefore sometimes called the scattering coefficients. They capture the scattering data of $\mathbf{q}\left(z_0, t\right)$ and can also be collected in the socalled scattering matrix $\mathbf{S}(z, \xi)$. We can express~\eqref{CommonSolution} in terms of the scattering matrix as
 $$
 \left[\begin{array}{ll}
 \Psi & \bar{\Psi}
@@ -638,10 +653,10 @@ where 2-dimensional kernels are defined for all real $t$ by
 \end{equation}
 
 
-After solving the system~(\ref{eq:glm_left}), the potential $\mathbf{q}(t)$ is restored by the formulas
+After solving the system~(\ref{eq:glm_left}), the potential $\mathbf{q}(t,z)$ is restored by the formulas
 
 $$
-\mathbf{q}(t)=-2 \mathbf{\Theta}_{2}^{*}(t, t)
+\mathbf{q}(t,z)=-2 \mathbf{\Theta}_{2}^{*}(t, t)
 $$
 
 % \subsection{Old}
@@ -660,7 +675,7 @@ $$
 % \xrightarrow[t\rightarrow-\infty]{} \left(\begin{matrix}e^{-i\xi t}\\ 0\end{matrix}\right).
 % \label{f:asy}
 % \end{equation}
-% The NF pulse decomposition consists in finding the continuous and discrete components of the NF spectrum associated with the localised signal $q(t)$. The core part of NFT is the calculation of scattering coefficients, $a(\xi) \in \mathbb{C}$ and $b(\xi) \in \mathbb{C}$, defined through the Jost solution $\Phi(t,\xi)$ as follows
+% The NF pulse decomposition consists in finding the continuous and discrete components of the NF spectrum associated with the localised signal $q(t)$. The core part of \acrshort{nft} is the calculation of scattering coefficients, $a(\xi) \in \mathbb{C}$ and $b(\xi) \in \mathbb{C}$, defined through the Jost solution $\Phi(t,\xi)$ as follows
 % \begin{equation}
 % a(\xi)=\lim_{t\rightarrow+\infty}\phi_1(t,\xi) e^{i\xi t},
 % \qquad b(\xi)=\lim_{t \rightarrow+\infty}\phi_2(t,\xi) e^{-i\xi t},
@@ -726,7 +741,7 @@ Optical solitons are divided into two large classes: conservative and dissipativ
 
 These two classes of solitons have both common properties and fundamental differences, as a result of their common nature, but of a different method of formation. The set of basic parameters of dissipative solitons is discrete due to the requirement for the energy balance. This leads to their increased stability, and, as a result, dissipative solitons have prospects in various practical applications. Conservative solitons are determined by a continuously varying parameter, for example, intensity or width. Depending on the method of energy input into the optical system, the solitons are divided into coherent and incoherent. Coherent solitons are formed in a beam of continuous coherent radiation, which determines the frequency and phase. The incoherent signal forms incoherent solitons, for which the common radiation phase is arbitrary.
 
-Due to the presence of noise in real systems, the possibility of spontaneous transition between soliton and soliton-free structures is realized. The soliton itself, although not a stable structure, can exist for a long time, since it is resistant to small perturbations. Transitions can be caused by large fluctuations that are unlikely in real systems. This fact leads to one interesting feature described in \cite{PS01}, when in the process of signal evolution in the system solitons arise.
+Due to the presence of noise in real systems, the possibility of spontaneous transition between soliton and soliton-free structures is realized. The soliton itself, although not a stable structure, can exist for a long time, since it is resistant to small perturbations. Transitions can be caused by large fluctuations that are unlikely in real systems. This fact leads to one interesting feature described in \cite{randoux16inverse}, when in the process of signal evolution in the system solitons arise.
 
 The study of optical solitons began in the 60s of the 20th century, when the first optical nonlinear systems appeared, and experiments in this field became available. The first example was the article \cite{askaryan1962en} about the possibility of the existence of a spatial conservative soliton in a transparent medium with a self-focusing nonlinearity. Later, a time soliton was discovered in single-mode fibers with the Kerr nonlinearity \cite{hasegawa1973}.
 
@@ -739,7 +754,7 @@ As the first analytical signal for which the nonlinear spectrum is known, we tak
     q(t, 0) = A \ \mathrm{sech}(t) {,}
     \label{eq:satsuma_yajima}
 \end{equation}
-hyperbolic profile with variable amplitude $ A $. We assume that $ A> 0 $ is real, because otherwise the phase factor only affects the phase of the solution $q (t, z)$, which in this context does not interest us. In 1974, Satsuma and Yajima showed that the signal~(\ref{eq:satsuma_yajima}) is a particular solution of the Zakharov-Shabat problem~(\ref{eq:ZS}), and its nonlinear spectrum was found.
+hyperbolic profile with variable amplitude $ A $. We assume that $ A> 0 $ is real, because otherwise the phase factor only affects the phase of the solution $q (t, z)$, which in this context does not interest us. In 1974, Satsuma and Yajima showed that the signal~(\ref{eq:satsuma_yajima}) is a particular solution of the \acrfull{zsp}~(\ref{eq:ZS}), and its nonlinear spectrum was found.
 
 They found that the function written as follows:
 \begin{equation}
@@ -822,17 +837,17 @@ The first level $L_1$ of the norm calculated by this formula is 1.57, the second
  
 
 \subsection{NF spectrum associated with finite-extent signals}
-In practical applications, we do not typically deal with the signals defined on the whole infinite $t$-axis, but rather operate with the truncated wave-forms, meaning that $q(t)$ is non-zero only inside the finite interval of $t$. In this case, the NF spectrum of the signal is completely characterised by the coefficient $b(\xi)$ from (\ref{eq:nlse_ab}), which becomes band-limited, appended with the finite discrete set of solitonic parameters $\{\xi_n,r_n\}$ \cite{gzl18,svp20}. When, in addition, the discrete NF spectrum is absent, as it is in the case considered, the whole NF spectrum can be defined using just $b(\xi)$ profile\cite{w17}, while the coefficient $a(\xi)$ can be expressed through $b(\xi)$ in the following way:
+In practical applications, we do not typically deal with the signals defined on the whole infinite $t$-axis, but rather operate with the truncated wave-forms, meaning that $q(t)$ is non-zero only inside the finite interval of $t$. In this case, the \acrshort{nf} spectrum of the signal is completely characterised by the coefficient $b(\xi)$ from (\ref{eq:nlse_ab}), which becomes band-limited, appended with the finite discrete set of solitonic parameters $\{\xi_n,r_n\}$ \cite{gzl18,svp20}. When, in addition, the discrete \acrshort{nf} spectrum is absent, as it is in the case considered, the whole \acrshort{nf} spectrum can be defined using just $b(\xi)$ profile\cite{w17}, while the coefficient $a(\xi)$ can be expressed through $b(\xi)$ in the following way:
 \begin{equation}\label{a-fin}
 a(\xi) = \sqrt{1-|b(\xi)|^2} \, \exp \! \left[ \frac{i}{2 \pi} \intop^{\infty}_{-\infty} \frac{\ln \big(1-|b(s)|^2 \big)}{\xi - s} \, ds \right],
 \end{equation}
 where the integral in the exponent is understood in the principal value sense.
-So, in practice, instead of $r(\xi)$ (\ref{eq:nlse_r}), it is sufficient to compute the b-coefficient, and then find $a(\xi)$ using Eq.~(\ref{a-fin}). If needed, we then can use both computed quantities to find the reflection coefficient (\ref{eq:nlse_r}). We note that within the b-modulation concept, which has turned out to be the most efficacious NFDM method developed so far, we utilise the $b(\xi)$ functions as information carriers\cite{w17,gzl18,svp20,cw20}.
+So, in practice, instead of $r(\xi)$ (\ref{eq:nlse_r}), it is sufficient to compute the b-coefficient, and then find $a(\xi)$ using Eq.~(\ref{a-fin}). If needed, we then can use both computed quantities to find the reflection coefficient (\ref{eq:nlse_r}). We note that within the b-modulation concept, which has turned out to be the most efficacious \acrshort{pnft} method developed so far, we utilise the $b(\xi)$ functions as information carriers\cite{w17,gzl18,svp20,cw20}.
 
 
 
-\subsection{NF spectrum for the weakly-nonlinear case and threshold for soliton nucleation}
-Let us assume that the amplitude of our signal is small, say $|q(t)| \sim \epsilon$, with $\epsilon \ll 1$. Then, we can derive the following expansions for the NF scattering coefficients \cite{pdt13}:
+\subsection{NF spectrum for the weakly-nonlinear case}
+Let us assume that the amplitude of our signal is small, say $|q(t)| \sim \epsilon$, with $\epsilon \ll 1$. Then, we can derive the following expansions for the \acrshort{nf} scattering coefficients \cite{pdt13}:
 \begin{equation}\label{a1}
 a(\xi) = 1 - \!\! \intop_{-\infty}^{\infty} \! dt_1 \!\! \intop_{-\infty}^{t_1} \!\! dt_2 \, e^{2 i \xi (t_1-t_2)} q(t_1) \bar q(t_2),
 \end{equation}
@@ -844,4 +859,4 @@ up to $\epsilon^3$  (the next expansion term $\sim \epsilon^5$). With the accura
 \begin{equation}\label{r0}
 r(\xi) = - \intop_{-\infty}^{\infty} \!\! dt_1 \, e^{- 2 i \xi t_1} \bar q(t_1) -  \intop_{-\infty}^{\infty} \!\! dt_1 \intop_{t_1}^{\infty} \! \!dt_2 \!\! \intop_{-\infty}^{t_2}\!\!  dt_3  \, e^{2 i \xi (t_2-t_1-t_3)} \bar q(t_1) q(t_2) \bar q(t_3) .
 \end{equation}
-So we see that the first linear term in $r(\xi)$ expansion is simply the conjugated FT of our signal up to the frequency scaling factor. Then, $r(\xi)$ from Eq.~(\ref{r0}) differs from the expression for $b(\xi)$, Eq.~(\ref{b1}), only by the terms $\sim \epsilon^3$ and higher, but the structure of both expressions is the same.
+So we see that the first linear term in $r(\xi)$ expansion is simply the conjugated \acrshort{ft} of our signal up to the frequency scaling factor. Then, $r(\xi)$ from Eq.~(\ref{r0}) differs from the expression for $b(\xi)$, Eq.~(\ref{b1}), only by the terms $\sim \epsilon^3$ and higher, but the structure of both expressions is the same.

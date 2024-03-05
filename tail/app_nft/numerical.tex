@@ -138,9 +138,9 @@ This form was found by Ablowitz and Ladik \cite{ablowitz1975, ablowitz1976} and 
 
 \subsection{T\"oplitz inner bordering method}
 
-The formation of technologies for creating fiber Bragg gratings (FBGs) \cite{agrawal2002, kashyap1999} was accompanied by the development of numerical methods for their modeling and analysis. Recovery of the refractive index from a given dependence of the scattering coefficient on the frequency is the inverse scattering problem, which is solved in mathematical physics using a pair of Gelfand-Levitan-Marchenko \cite{zakharov1972exact} equations.
+The formation of technologies for creating \acrlong{fbg}s (\acrshort{fbg}s) \cite{agrawal2002, kashyap1999} was accompanied by the development of numerical methods for their modeling and analysis. Recovery of the refractive index from a given dependence of the scattering coefficient on the frequency is the inverse scattering problem, which is solved in mathematical physics using a pair of \acrlong{glm} \cite{zakharov1972exact} equations.
 
-The work \cite{belai2007} was proposed a method for solving the GLM equations (\ref{eq:glm_1}) and (\ref{eq:glm_2}). It consists in the fact that the GLM equations can be reduced to equations with the Toeplitz kernel by replacing $u(t,x) = A_1(t,t-x)$ and $v(t,y) = -A^{*}_2(t,y-t)$:
+The work \cite{belai2007} was proposed a method for solving the \acrshort{glm} equations (\ref{eq:glm_1}) and (\ref{eq:glm_2}). It consists in the fact that the \acrshort{glm} equations can be reduced to equations with the Toeplitz kernel by replacing $u(t,x) = A_1(t,t-x)$ and $v(t,y) = -A^{*}_2(t,y-t)$:
 \begin{eqnarray}
     u(t,x)+\int_{x}^{2t} \Omega^{*}(y-x) v(t,y) dy = 0 \nonumber \\
     v(t,y)+\int_{0}^{y} \Omega(y-x) u(t,x) dx + \Omega(y) = 0
@@ -291,7 +291,7 @@ This procedure can be described as an algorithm that can be reversed. Next, we p
 
 \subsubsection{Factorization of GLM equations}
 
-For a discrete spectrum, factorization of the kernel of the GLM equations leads to a system of algebraic equations (a detailed description can be found in \cite{lamb1980}). Then the $ N $-soliton solution can be found using the following exact expression:
+For a discrete spectrum, factorization of the kernel of the \acrshort{glm} equations leads to a system of algebraic equations (a detailed description can be found in \cite{lamb1980}). Then the $ N $-soliton solution can be found using the following exact expression:
 \begin{equation}
     q^{(N)}(t, z = 0) = -2 \langle \mathbf{\Psi}(t) | (\widehat{\mathbf{E}} + 
     \widehat{\mathbf{M}}^*(t) \widehat{\mathbf{M}}(t) )^{-1} | \mathbf{\Phi}(t) \rangle
